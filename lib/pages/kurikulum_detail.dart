@@ -17,8 +17,30 @@ class KurikulumDetailScreen extends StatelessWidget {
             new Expanded(
               child: new Container(
                 decoration: const BoxDecoration(color: Colors.blueAccent),
+                child: ListView(
+                  children: <Widget>[
+                    ListTile(
+                      dense: true,
+                      leading: Text('1.'),
+                      title: Text('Map'),
+                      subtitle: Text('123'),
+                    ),
+                    ListTile(
+                      dense: true,
+                      leading: Text('1.1.'),
+                      title: Text('Map'),
+                      subtitle: Text('123'),
+                    ),
+                    ListTile(
+                      dense: true,
+                      leading: Text('1.1.1.'),
+                      title: Text('Map'),
+                      subtitle: Text('123'),
+                    ),
+                  ],
+                ),
               ),
-              flex: 1,
+              flex: 2,
             ),
             new Expanded(
               child: DefaultTabController( 
