@@ -10,7 +10,7 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
-    return new SplashScreen(
+    return SplashScreen(
       seconds: 5,
       navigateAfterSeconds: new KurikulumSMKApp(),
       title: new Text('Kurikulum SMK',
