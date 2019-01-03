@@ -4,12 +4,35 @@ import 'package:kurikulumsmk/pages/kurikulum_detail.dart';
 class KurikulumScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListView.builder(
-        itemBuilder: (BuildContext context, int index) =>
-            EntryItem(context, data[index]),
-        itemCount: data.length,
-      )
+    return Column(
+      children: <Widget>[
+        Container(
+          color: Theme.of(context).primaryColor,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Card(
+              child: ListTile(
+                leading: Icon(Icons.search),
+                title: TextField(
+                  decoration: InputDecoration(
+                      hintText: 'Search', border: InputBorder.none),
+                ),
+                trailing: IconButton(icon: Icon(Icons.cancel), onPressed: () {
+                  //controller.clear();
+                  //onSearchTextChanged('');
+                }),
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemBuilder: (BuildContext context, int index) =>
+              EntryItem(context, data[index]),
+            itemCount: data.length,
+          )
+        )
+      ]
     );
   }
 }
