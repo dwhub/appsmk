@@ -20,7 +20,7 @@ class _SplashState extends State<Splash> {
         fontSize: 20.0
       ),),
       image: Image.asset('assets/logo.png'),
-      backgroundColor: Colors.lightBlueAccent,
+      backgroundColor: Colors.white,
       styleTextUnderTheLoader: new TextStyle(),
       photoSize: 100.0,
       onClick: ()=>print("Now loading ..."),

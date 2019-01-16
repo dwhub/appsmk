@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:kurikulumsmk/tabs/contact_person.dart';
-import 'package:kurikulumsmk/tabs/data_sekolah.dart';
-import 'package:kurikulumsmk/tabs/maklumat.dart';
-import 'package:kurikulumsmk/tabs/struktur_kurikulum.dart';
-import 'package:kurikulumsmk/tabs/ujian_nasional.dart';
+import 'package:kurikulumsmk/UI/tabs/contact_person.dart';
+import 'package:kurikulumsmk/UI/tabs/data_sekolah.dart';
+import 'package:kurikulumsmk/UI/tabs/maklumat.dart';
+import 'package:kurikulumsmk/UI/tabs/struktur_kurikulum.dart';
+import 'package:kurikulumsmk/UI/tabs/ujian_nasional.dart';
 
 class KurikulumSMKApp extends StatelessWidget {
   // This widget is the root of your application.
