@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:kurikulumsmk/tabs/contact_person.dart';
-import 'package:kurikulumsmk/tabs/data_sekolah.dart';
-import 'package:kurikulumsmk/tabs/maklumat.dart';
-import 'package:kurikulumsmk/tabs/struktur_kurikulum.dart';
-import 'package:kurikulumsmk/tabs/ujian_nasional.dart';
+import 'package:kurikulumsmk/UI/tabs/contact_person.dart';
+import 'package:kurikulumsmk/UI/tabs/data_sekolah.dart';
+import 'package:kurikulumsmk/UI/tabs/maklumat.dart';
+import 'package:kurikulumsmk/UI/tabs/struktur_kurikulum.dart';
+import 'package:kurikulumsmk/UI/tabs/ujian_nasional.dart';
 
 class KurikulumSMKApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -13,7 +13,23 @@ class KurikulumSMKApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+ @override
+ State<StatefulWidget> createState() {
+    return _HomeState();
+  }
+}
+
+class _HomeState extends State<HomePage> {
+  int _currentIndex = 0;
+  final List<Widget> _children = [
+    KurikulumScreen(),
+    //UjianNasionalScreen(),
+    DataSekolahScreen(),
+    ContactScreen(),
+    MaklumatScreen()
+  ];
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController( 
@@ -22,24 +38,37 @@ class HomePage extends StatelessWidget {
         appBar: AppBar(
           title: Text("Kurikulum SMK"),
           centerTitle: true,
-          bottom: TabBar(
-              tabs: [
-                Tab(icon: Icon(Icons.view_headline, size: 30.0)),
-                Tab(icon: Icon(Icons.view_module, size: 30.0)),
-                Tab(icon: Icon(Icons.explore, size: 30.0)),
-                Tab(icon: Icon(Icons.bookmark, size: 30.0)),
-                Tab(icon: Icon(Icons.ac_unit, size: 30.0)),
-            ]),
           ),
-          body: new TabBarView(children: [
-            KurikulumScreen(),
-            UjianNasionalScreen(),
-            DataSekolahScreen(),
-            ContactScreen(),
-            MaklumatScreen()
-          ])
+          body: _children[_currentIndex],
+          bottomNavigationBar: new Theme(
+            data: Theme.of(context).copyWith(
+                // sets the background color of the `BottomNavigationBar`
+                canvasColor: Colors.blue,
+                // sets the active color of the `BottomNavigationBar` if `Brightness` is light
+                primaryColor: Colors.lightBlueAccent,
+                textTheme: Theme
+                    .of(context)
+                    .textTheme
+                    .copyWith(caption: new TextStyle(color: Colors.white))), // sets the inactive color of the `BottomNavigationBar`
+            child: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              onTap: onTabTapped,
+              currentIndex: _currentIndex,
+              items: [
+                BottomNavigationBarItem(icon: Icon(Icons.list, size: 30.0), title: Text("Kurikulum")),
+                //BottomNavigationBarItem(icon: Icon(Icons.class_, size: 30.0), title: Text("U.N.")),
+                BottomNavigationBarItem(icon: Icon(Icons.school, size: 30.0), title: Text("Sekolah")),
+                BottomNavigationBarItem(icon: Icon(Icons.contacts, size: 30.0), title: Text("Contact")),
+                BottomNavigationBarItem(icon: Icon(Icons.info_outline, size: 30.0), title: Text("Maklumat")),
+              ]),
+          ),
       )
     );
   }
-}
 
+  void onTabTapped(int index) {
+   setState(() {
+     _currentIndex = index;
+   });
+ }
+}
