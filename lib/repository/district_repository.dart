@@ -3,23 +3,33 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:kurikulumsmk/config.dart';
 import 'package:kurikulumsmk/model/district.dart';
-import 'package:flutter/foundation.dart';
 
 class DistrictRepository implements IDistrictRepository {
   @override
   Future<List<District>> fetchDistricts(int provinceId) async {
     http.Response response = await http.get(API_BASE_URL + "districts/with/province/" + provinceId.toString());
 
-    return compute(parseDistricts, response.body);
+    final Map exMap = JsonCodec().decode(response.body);
+
+    List<District> ex = (exMap['message'] as List).map((e) => District.fromJson(e)).toList();
+    if (ex == null) {
+      throw new Exception("An error occurred : [ Status Code = ]");
+    }
+    return ex;
   }
 }
 
-List<District> parseDistricts(String responseBody) {
-  final Map exMap = JsonCodec().decode(responseBody);
+abstract class IDistrictRepository {
+  Future<List<District>> fetchDistricts(int provinceId);
+}
 
-  List<District> ex = (exMap['message'] as List).map((e) => District.fromJson(e)).toList();
-  if (ex == null) {
-    throw new Exception("An error occurred : [ Status Code = ]");
+class FetchDistrictException implements Exception {
+  final _message;
+
+  FetchDistrictException([this._message]);
+
+  String toString() {
+    if (_message == null) return "Exception";
+    return "Exception : $_message";
   }
-  return ex;
 }

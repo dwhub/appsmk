@@ -63,18 +63,3 @@ class Schools {
         schools = new List<School>.from(
             value['schools'].map((school) => School.fromJson(school)));
 }
-
-abstract class ISchoolRepository {
-  Future<Schools> fetchSchools(int pageNumber, int pageSize);
-}
-
-class FetchSchoolsException implements Exception {
-  final _message;
-
-  FetchSchoolsException([this._message]);
-
-  String toString() {
-    if (_message == null) return "Exception";
-    return "Exception : $_message";
-  }
-}

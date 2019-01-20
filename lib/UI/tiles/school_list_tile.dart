@@ -18,19 +18,22 @@ class SchoolListTile extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                Icon(Icons.school, color: Colors.blue[500], size: 22),
-                Text(
-                  ' ${school.name}',
-                  style: new TextStyle(
-                    fontSize: 17.0,
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+              child: Row(
+                children: <Widget>[
+                  Icon(Icons.school, color: Colors.blue[500], size: 22),
+                  Text(
+                    ' ${school.name}',
+                    style: new TextStyle(
+                      fontSize: 17.0,
+                    ),
                   ),
-                ),
-              ]
+                ]
+              ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
               child: Text(
                 'NPSN - ${school.npsn}',
                 style: new TextStyle(
@@ -38,13 +41,11 @@ class SchoolListTile extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-              child: Text(
-                '${school.address}',
-                style: new TextStyle(
-                  fontSize: 13.0,
-                ),
+            Divider(),
+            Text(
+              '${school.address}',
+              style: new TextStyle(
+                fontSize: 13.0,
               ),
             ),
             Text(
@@ -53,10 +54,13 @@ class SchoolListTile extends StatelessWidget {
                 fontSize: 13.0,
               ),
             ),
-            Text(
-              '${school.district}',
-              style: new TextStyle(
-                fontSize: 13.0,
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+              child: Text(
+                '${school.district}',
+                style: new TextStyle(
+                  fontSize: 13.0,
+                ),
               ),
             ),
           ]
