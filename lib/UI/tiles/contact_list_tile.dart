@@ -18,19 +18,22 @@ class ContactListTile extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Icon(Icons.person, color: Colors.blue[500], size: 22),
-                  Text(
-                    '${contact.name}',
-                    style: new TextStyle(
-                      fontSize: 17.0,
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.person, color: Colors.blue[500], size: 22),
+                    Text(
+                      '${contact.name}',
+                      style: new TextStyle(
+                        fontSize: 17.0,
+                      ),
                     ),
-                  ),
-                ]
+                  ]
+                ),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                 child: Row(
                   children: <Widget>[
                     Icon(Icons.phone, color: Colors.blue[500], size: 22),
@@ -43,8 +46,9 @@ class ContactListTile extends StatelessWidget {
                   ]
                 ),
               ),
+              Divider(),
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
                 child: Text(
                   '${contact.address}',
                   style: new TextStyle(

@@ -1,170 +1,128 @@
 import 'package:flutter/material.dart';
+import 'package:kurikulumsmk/UI/widgets/district_dropdown.dart';
+import 'package:kurikulumsmk/UI/widgets/province_dropdown.dart';
+import 'package:kurikulumsmk/bloc/common_bloc.dart';
+import 'package:kurikulumsmk/bloc/contact_bloc.dart';
 import 'package:kurikulumsmk/common/placeholder_content.dart';
+import 'package:kurikulumsmk/event/contact_event_args.dart';
 import 'package:kurikulumsmk/model/contact.dart';
-import 'package:kurikulumsmk/model/district.dart';
-import 'package:kurikulumsmk/model/province.dart';
-import 'package:kurikulumsmk/repository/contact_repository.dart';
 import 'package:kurikulumsmk/UI/tiles/contact_list_tile.dart';
-import 'package:kurikulumsmk/repository/province_repository.dart';
 import 'package:kurikulumsmk/utils/constants.dart';
+import 'package:kiwi/kiwi.dart' as kiwi;
 
 class ContactScreen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _ContactState();
+  ContactScreenState createState() {
+    return new ContactScreenState();
+  }
 }
 
-class _ContactState extends State<ContactScreen> {
-  List<Contact> contact = Contact().getDummyData();
+class ContactScreenState extends State<ContactScreen> {
+  final contactBloc = kiwi.Container().resolve<ContactBloc>();
+  final commonBloc = kiwi.Container().resolve<CommonBloc>();
 
-  Province selectedProvinsi;
-  List<Province> provinsi = <Province>[const Province(id: 1, name: "Jawa Tengah"), const Province(id: 2, name: "D.I.Y")];
-
-  District selectedKabupaten;
-  List<District> kabupaten = <District>[const District(id: 1, name: "Sleman"), const District(id: 2, name: "Bantul")];
+  @override
+  void initState() {
+    super.initState();
+    contactBloc.reset();
+    commonBloc.reset();
+  }
 
   @override
   Widget build(BuildContext context) {
+
+    if (contactBloc.contactsData.length == 0) {
+      contactBloc.loadContacts.add(ContactEventArgs(1, 20));
+    }
+
+    if (commonBloc.provincesData.length == 0) {
+      commonBloc.loadProvinces.add(null);
+      commonBloc.selectedProvince = null;
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
+        // Province dropdown
         Padding(
           padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-          child: new FutureBuilder<List<Province>>(
-            future: ProvinceRepository().fetchProvinces(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState != ConnectionState.done)
-                return Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: EdgeInsets.all(5),
-                    child: SizedBox(
-                      child: CircularProgressIndicator(),
-                      height: 15.0,
-                      width: 15.0,
+          child: ProvinceDropdown(commonBloc),
+        ),
+        // District Dropdown
+        Padding(
+          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+          child: DistrictDropdown(commonBloc),
+        ),
+        Container(
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: FlatButton(
+                onPressed: () {
+                  contactBloc.resetContactData();
+                  contactBloc.loadContacts.add(ContactEventArgs(1, 20, 
+                            provinceId: commonBloc.selectedProvince == null ? 0 : commonBloc.selectedProvince.id,
+                            districtId: commonBloc.selectedDistrict == null ? 0 : commonBloc.selectedDistrict.id));
+                },
+                color: Colors.blue,
+                padding: EdgeInsets.all(10.0),
+                child: Column( // Replace with a Row for horizontal icon + text
+                  children: <Widget>[
+                    IconTheme(
+                        data: IconThemeData(
+                            color: Colors.white), 
+                        child: Icon(Icons.search),
                     ),
-                  ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+        Divider(),
+        Expanded(
+          child: StreamBuilder(
+            stream: contactBloc.contacts,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData)
+                return Center(
+                  child: CircularProgressIndicator(),
                 );
 
-              return
-                new DropdownButtonHideUnderline(
-                  child: ButtonTheme(
-                    alignedDropdown: true,
-                    child: DropdownButton<Province>(
-                      value: selectedProvinsi,
-                      hint: Text("Provinsi"),
-                      items: snapshot.data.map((Province provinsi) {
-                          return DropdownMenuItem<Province>(
-                            value: provinsi,
-                            child: Text(
-                              provinsi.name,
-                              style: TextStyle(color: Colors.black),
-                            ),
-                          );
-                        }).toList(),
-                      onChanged: (Province newValue) {
-                        setState(() {
-                          selectedProvinsi = newValue;
-                        });
-                      },
-                    ),
-                  ),
-                );
-            },
-          ),
-          /*DropdownButton<Province>(
-            value: selectedProvinsi,
-            hint: Text("Provinsi"),
-            onChanged: (Province newValue) {
-              setState(() {
-                selectedProvinsi = newValue;
-              });
-            },
-            items: provinsi.map((Province provinsi) {
-              return DropdownMenuItem<Province>(
-                value: provinsi,
-                child: Text(
-                  provinsi.name,
-                  style: TextStyle(color: Colors.black),
-                ),
-              );
-            }).toList(),
-          ),*/
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-          child: DropdownButton<District>(
-            value: selectedKabupaten,
-            hint: Text("Kabupaten"),
-            onChanged: (District newValue) {
-              setState(() {
-                selectedKabupaten = newValue;
-              });
-            },
-            items: kabupaten.map((District kabupaten) {
-              return DropdownMenuItem<District>(
-                value: kabupaten,
-                child: Text(
-                  kabupaten.name,
-                  style: TextStyle(color: Colors.black),
-                ),
-              );
-            }).toList(),
-          ),
-        ),
-        Expanded(
-          child: FutureBuilder<Contacts>(
-            future: ContactRepository().fetchContacts(1, 20),
-            builder: (context, snapshots) {
-              if (snapshots.hasError)
+              if (snapshot.hasError)
                 return PlaceHolderContent(
                   title: "Problem Occurred",
                   message: "Cannot connect to internet please try again",
-                  tryAgainButton: _tryAgainButtonClick,
+                  tryAgainButton: (e) { contactBloc.loadContacts.add(ContactEventArgs(1, 20)); },
                 );
-              switch (snapshots.connectionState) {
-                case ConnectionState.waiting:
-                  return Center(child: CircularProgressIndicator());
-                case ConnectionState.done:
-                  return ContactTile(contacts: snapshots.data);
-                default:
-              }
-            })
+
+              contactBloc.loadMoreStatus = LoadMoreStatus.STABLE;
+              Contacts result = snapshot.data as Contacts;
+              contactBloc.contactsData.addAll(result.contacts);
+              return ContactTile(contacts: contactBloc.contactsData,
+                                 currentPage: result.paging.page,
+                                 totalPage: result.paging.total,
+                                 contactBloc: contactBloc,
+                                 commonBloc: commonBloc);
+            },
+          ),
         )
       ],
     );
   }
-
-  _tryAgainButtonClick(bool _) => setState(() {});
 }
 
-class ContactTile extends StatefulWidget {
-  final Contacts contacts;
+class ContactTile extends StatelessWidget {
+  final List<Contact> contacts;
+  final ContactBloc contactBloc;
+  final int currentPage;
+  final int totalPage;
+  final CommonBloc commonBloc;
 
-  ContactTile({Key key, this.contacts}) : super(key: key);
+  ContactTile({Key key, this.contacts, this.contactBloc, this.commonBloc, this.currentPage, this.totalPage}) : super(key: key);
 
-  @override
-  State<StatefulWidget> createState() => ContactTileState();
-}
-
-class ContactTileState extends State<ContactTile> {
-  LoadMoreStatus loadMoreStatus = LoadMoreStatus.STABLE;
   final ScrollController scrollController = new ScrollController();
-
-  List<Contact> contacts;
-  int currentPageNumber;
-
-  @override
-  void initState() {
-    contacts = widget.contacts.contacts;
-    currentPageNumber = widget.contacts.paging.page;
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    scrollController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -185,16 +143,13 @@ class ContactTileState extends State<ContactTile> {
       if (scrollController.position.maxScrollExtent > scrollController.offset &&
           scrollController.position.maxScrollExtent - scrollController.offset <=
               50) {
-        if (loadMoreStatus != null &&
-            loadMoreStatus == LoadMoreStatus.STABLE) {
-          loadMoreStatus = LoadMoreStatus.LOADING;
-          ContactRepository()
-              .fetchContacts(currentPageNumber + 1, 20)
-              .then((contactsObject) {
-            currentPageNumber = contactsObject.paging.page;
-            loadMoreStatus = LoadMoreStatus.STABLE;
-            setState(() => contacts.addAll(contactsObject.contacts));
-          });
+        if (contactBloc.loadMoreStatus != null &&
+            contactBloc.loadMoreStatus == LoadMoreStatus.STABLE &&
+            currentPage + 1 <= totalPage) {
+          contactBloc.loadMoreStatus = LoadMoreStatus.LOADING;
+          contactBloc.loadContacts.add(ContactEventArgs(currentPage + 1, 20, 
+                  provinceId: commonBloc.selectedProvince == null ? 0 : commonBloc.selectedProvince.id,
+                  districtId: commonBloc.selectedDistrict == null ? 0 : commonBloc.selectedDistrict.id));
         }
       }
     }

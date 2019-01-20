@@ -3,23 +3,33 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:kurikulumsmk/config.dart';
 import 'package:kurikulumsmk/model/province.dart';
-import 'package:flutter/foundation.dart';
 
 class ProvinceRepository implements IProvinceRepository {
   @override
-  Future<List<Province>> fetchProvinces() async {
+  Future<List<Province>> fetchProvinces(dynamic flag) async {
     http.Response response = await http.get(API_BASE_URL + "provinces");
 
-    return compute(parseProvinces, response.body);
+    final Map exMap = JsonCodec().decode(response.body);
+
+    List<Province> ex = (exMap['message'] as List).map((e) => Province.fromJson(e)).toList();
+    if (ex == null) {
+      throw new Exception("An error occurred : [ Status Code = ]");
+    }
+    return ex;
   }
 }
 
-List<Province> parseProvinces(String responseBody) {
-  final Map exMap = JsonCodec().decode(responseBody);
+abstract class IProvinceRepository {
+  Future<List<Province>> fetchProvinces(dynamic flag);
+}
 
-  List<Province> ex = (exMap['message'] as List).map((e) => Province.fromJson(e)).toList();
-  if (ex == null) {
-    throw new Exception("An error occurred : [ Status Code = ]");
+class FetchProvinceException implements Exception {
+  final _message;
+
+  FetchProvinceException([this._message]);
+
+  String toString() {
+    if (_message == null) return "Exception";
+    return "Exception : $_message";
   }
-  return ex;
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kurikulumsmk/UI/tabs/contact_person.dart';
-import 'package:kurikulumsmk/UI/tabs/data_sekolah.dart';
+import 'package:kurikulumsmk/UI/tabs/school_data.dart';
 import 'package:kurikulumsmk/UI/tabs/maklumat.dart';
 import 'package:kurikulumsmk/UI/tabs/struktur_kurikulum.dart';
 import 'package:kurikulumsmk/UI/tabs/ujian_nasional.dart';
