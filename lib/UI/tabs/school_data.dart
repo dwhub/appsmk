@@ -149,7 +149,7 @@ class SchoolTile extends StatelessWidget {
           schoolBloc.loadSchools.add(SchoolEventArgs(currentPage + 1, 20,
                             provinceId: commonBloc.selectedProvince == null ? 0 : commonBloc.selectedProvince.id,
                             districtId: commonBloc.selectedDistrict == null ? 0 : commonBloc.selectedDistrict.id,
-                            competendyId: expertiseBloc.selectedExCompetency == null ? 0 : expertiseBloc.selectedExCompetency.id,
+                            competencyId: expertiseBloc.selectedExCompetency == null ? 0 : expertiseBloc.selectedExCompetency.id,
                             schoolType: schoolBloc.selectedSchoolType));
         }
       }
@@ -258,7 +258,7 @@ class SchoolFilter extends StatelessWidget {
                       schoolBloc.loadSchools.add(SchoolEventArgs(1, 20,
                             provinceId: commonBloc.selectedProvince == null ? 0 : commonBloc.selectedProvince.id,
                             districtId: commonBloc.selectedDistrict == null ? 0 : commonBloc.selectedDistrict.id,
-                            competendyId: expertiseBloc.selectedExCompetency == null ? 0 : expertiseBloc.selectedExCompetency.id,
+                            competencyId: expertiseBloc.selectedExCompetency == null ? 0 : expertiseBloc.selectedExCompetency.id,
                             schoolType: schoolBloc.selectedSchoolType));
                       schoolBloc.showFilter.add(false);
                     },

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:kurikulumsmk/UI/details/alokasi_waktu.dart';
 import 'package:kurikulumsmk/UI/details/buku_mapel.dart';
-import 'package:kurikulumsmk/UI/details/jam_pelajaran.dart';
+import 'package:kurikulumsmk/UI/details/course_duration.dart';
 import 'package:kurikulumsmk/UI/details/ki_kd.dart';
 import 'package:kurikulumsmk/UI/details/sekolah.dart';
 import 'package:kurikulumsmk/model/expertise_structure.dart';
 
-class KurikulumDetailScreen extends StatelessWidget {
+class CurriculumDetailScreen extends StatelessWidget {
   final ExpertiseStructure fields;
   final ExpertiseStructure program;
   final ExpertiseStructure expertise;
 
-  const KurikulumDetailScreen(this.fields, this.program, this.expertise);
+  const CurriculumDetailScreen(this.fields, this.program, this.expertise);
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class KurikulumDetailScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => JamPelajaranDetailScreen(expertise.id),
+                            builder: (context) => CourseDurationScreen(expertise.id),
                           ),
                         );
                       }

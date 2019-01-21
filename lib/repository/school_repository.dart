@@ -9,8 +9,12 @@ class SchoolRepository implements ISchoolRepository {
   @override
   Future<Schools> fetchSchools(SchoolEventArgs e) async {
     http.Response response = await http.get(API_BASE_URL +
-        "schools?page=" +
-        e.page.toString() + "&pageSize=" + e.pageSize.toString());
+        "schools?page=" + e.page.toString() +
+        "&pageSize=" + e.pageSize.toString() +
+        "&districtID=" + e.districtId.toString() +
+        "&provinceID=" + e.provinceId.toString() +
+        "&competencyID=" + e.competencyId.toString() +
+        "&schoolType=" + e.schoolType.toString());
 
     final Map schoolsMap = JsonCodec().decode(response.body);
 

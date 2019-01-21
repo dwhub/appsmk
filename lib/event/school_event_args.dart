@@ -3,8 +3,8 @@ class SchoolEventArgs {
   final int pageSize;
   final int districtId;
   final int provinceId;
-  final int competendyId;
+  final int competencyId;
   final int schoolType;
 
-  SchoolEventArgs(this.page, this.pageSize, {this.provinceId = 0, this.districtId = 0, this.competendyId = 0, this.schoolType = 0});
+  SchoolEventArgs(this.page, this.pageSize, {this.provinceId = 0, this.districtId = 0, this.competencyId = 0, this.schoolType = 0});
 }
