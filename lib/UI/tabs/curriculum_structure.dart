@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kurikulumsmk/UI/pages/kurikulum_detail.dart';
+import 'package:kurikulumsmk/UI/pages/curriculum_detail.dart';
 import 'package:kurikulumsmk/common/placeholder_content.dart';
 import 'package:kurikulumsmk/model/expertise_structure.dart';
 import 'package:kurikulumsmk/repository/expertise_structure_repository.dart';
@@ -99,7 +99,7 @@ class ExpertiseStructureItem extends StatelessWidget {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => KurikulumDetailScreen(structureRoot, structureProgram, root),
+          builder: (context) => CurriculumDetailScreen(structureRoot, structureProgram, root),
         ),
       );
     });

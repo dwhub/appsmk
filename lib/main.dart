@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:kurikulumsmk/bloc/common_bloc.dart';
 import 'package:kurikulumsmk/bloc/contact_bloc.dart';
+import 'package:kurikulumsmk/bloc/course_duration_bloc.dart';
 import 'package:kurikulumsmk/bloc/expertise_bloc.dart';
 import 'package:kurikulumsmk/bloc/school_bloc.dart';
 import 'package:kurikulumsmk/repository/contact_repository.dart';
+import 'package:kurikulumsmk/repository/course_repository.dart';
 import 'package:kurikulumsmk/repository/district_repository.dart';
 import 'package:kurikulumsmk/repository/excompetency_repository.dart';
 import 'package:kurikulumsmk/repository/exfield_repository.dart';
@@ -21,6 +23,7 @@ void main(){
   container.registerInstance(DistrictRepository());
   container.registerInstance(ContactRepository());
   container.registerInstance(SchoolRepository());
+  container.registerInstance(CourseRepository());
   container.registerInstance(ExpertiseFieldRepository());
   container.registerInstance(ExpertiseProgramRepository());
   container.registerInstance(ExpertiseCompetencyRepository());
@@ -33,6 +36,7 @@ void main(){
   container.registerInstance(ExpertiseBloc(container.resolve<ExpertiseFieldRepository>(),
                                         container.resolve<ExpertiseProgramRepository>(),
                                         container.resolve<ExpertiseCompetencyRepository>()));
+  container.registerInstance(CourseDurationBloc(container.resolve<CourseRepository>()));
 
   runApp(new MaterialApp(
     home: new Splash(),
