@@ -54,6 +54,7 @@ class CommonBloc {
     selectedProvince = null;
     selectedDistrict = null;
     provincesData = List<Province>();
+    districtsData = List<District>();
   }
 
   Future<Province> provinceIsChanged(Province value) async {

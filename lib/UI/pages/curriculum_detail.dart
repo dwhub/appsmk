@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:kurikulumsmk/UI/details/alokasi_waktu.dart';
+import 'package:kurikulumsmk/UI/details/course_allocation.dart';
 import 'package:kurikulumsmk/UI/details/buku_mapel.dart';
 import 'package:kurikulumsmk/UI/details/course_duration.dart';
 import 'package:kurikulumsmk/UI/details/ki_kd.dart';
-import 'package:kurikulumsmk/UI/details/sekolah.dart';
+import 'package:kurikulumsmk/UI/details/school.dart';
 import 'package:kurikulumsmk/model/expertise_structure.dart';
 
 class CurriculumDetailScreen extends StatelessWidget {
@@ -73,7 +73,7 @@ class CurriculumDetailScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => AlokasiWaktuDetailScreen(expertise.id),
+                            builder: (context) => CourseAllocationDetailScreen(expertise.id),
                           ),
                         );
                       }
@@ -89,7 +89,7 @@ class CurriculumDetailScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SekolahDetailScreen(expertise.id),
+                            builder: (context) => SchoolDetailScreen(expertise.id),
                           ),
                         );
                       }

@@ -19,19 +19,69 @@ class CourseDuration {
   final String xiii2;
 
   factory CourseDuration.fromJson(Map<String, dynamic> value) {
+    String _x1, _x2, _xi1, _xi2, _xii1, _xii2, _xiii1, _xiii2;
+
+    if (value['x1'].toString() == '0') {
+      _x1 = '-';
+    } else {
+      _x1 = value['x1'].toString();
+    }
+
+    if (value['x2'].toString() == '0') {
+      _x2 = '-';
+    } else {
+      _x2 = value['x2'].toString();
+    }
+
+    if (value['xi1'].toString() == '0') {
+      _xi1 = '-';
+    } else {
+      _xi1 = value['xi1'].toString();
+    }
+
+    if (value['xi2'].toString() == '0') {
+      _xi2 = '-';
+    } else {
+      _xi2 = value['xi2'].toString();
+    }
+
+    if (value['xii1'].toString() == '0') {
+      _xii1 = '-';
+    } else {
+      _xii1 = value['xii1'].toString();
+    }
+
+    if (value['xii2'].toString() == '0') {
+      _xii2 = '-';
+    } else {
+      _xii2 = value['xii2'].toString();
+    }
+
+    if (value['xiii1'].toString() == '0') {
+      _xiii1 = '-';
+    } else {
+      _xiii1 = value['xiii1'].toString();
+    }
+
+    if (value['xiii2'].toString() == '0') {
+      _xiii2 = '-';
+    } else {
+      _xiii2 = value['xiii2'].toString();
+    }
+
     return CourseDuration(
         id: value['id'],
         order: value['order'],
         group: value['group'],
         competencyId: value['competency_id'],
         name: value['name'].toString(),
-        x1: value['x1'].toString(),
-        x2: value['x2'].toString(),
-        xi1: value['xi1'].toString(),
-        xi2: value['xi2'].toString(),
-        xii1: value['xii1'].toString(),
-        xii2: value['xii2'].toString(),
-        xiii1: value['xiii1'].toString(),
-        xiii2: value['xiii2'].toString(),);
+        x1: _x1,
+        x2: _x2,
+        xi1: _xi1,
+        xi2: _xi2,
+        xii1: _xii1,
+        xii2: _xii2,
+        xiii1: _xiii1,
+        xiii2: _xiii2);
   }
 }

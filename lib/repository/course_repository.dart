@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:kurikulumsmk/config.dart';
 import 'package:kurikulumsmk/event/course_duration_event_args.dart';
+import 'package:kurikulumsmk/model/course_allocation.dart';
 import 'package:kurikulumsmk/model/course_duration.dart';
 
 class CourseRepository implements ICourseRepository {
@@ -24,10 +25,30 @@ class CourseRepository implements ICourseRepository {
     }
     return ex;
   }
+
+  @override
+  Future<List<CourseAllocation>> fetchCourseAllocations(CourseAllocationEventArgs e) async {
+    http.Response response = await http.get(API_BASE_URL + "course/allocation/with/competency/" + 
+                  e.competencyId.toString() + "/group/" + e.groupId.toString());
+
+    final Map exMap = JsonCodec().decode(response.body);
+
+    List<CourseAllocation> ex = List<CourseAllocation>();
+
+    if (exMap['message'] != null) {
+      ex = (exMap['message'] as List).map((e) => CourseAllocation.fromJson(e)).toList();
+    }
+    
+    if (ex == null) {
+      throw new Exception("An error occurred : [ Status Code = ]");
+    }
+    return ex;
+  }
 }
 
 abstract class ICourseRepository {
   Future<List<CourseDuration>> fetchCourseDurations(CourseDurationEventArgs e);
+  Future<List<CourseAllocation>> fetchCourseAllocations(CourseAllocationEventArgs e);
 }
 
 class FetchCourseDurationException implements Exception {
