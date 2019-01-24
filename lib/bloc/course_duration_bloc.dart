@@ -1,4 +1,4 @@
-import 'package:kurikulumsmk/event/course_duration_event_args.dart';
+import 'package:kurikulumsmk/event/course_event_args.dart';
 import 'package:kurikulumsmk/model/course_duration.dart';
 import 'package:kurikulumsmk/model/course_group.dart';
 import 'package:kurikulumsmk/repository/course_repository.dart';

@@ -50,11 +50,19 @@ class _KurikulumScreenState extends State<KurikulumScreen> {
                   return Center(child: CircularProgressIndicator());
                 case ConnectionState.done:
                   data = snapshots.data;
-                  return ListView.builder(
-                          itemBuilder: (BuildContext context, int index) =>
-                            ExpertiseStructureItem(context, snapshots.data[index]),
-                          itemCount: snapshots.data.length,
-                        );
+                  return Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            child: ListView.builder(
+                              itemBuilder: (BuildContext context, int index) =>
+                                ExpertiseStructureItem(context, snapshots.data[index]),
+                              itemCount: snapshots.data.length,
+                            ),
+                    ),
+                  );
                 default:
               }
             })

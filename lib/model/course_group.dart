@@ -10,7 +10,7 @@ class CourseGroup {
 
     result.add(CourseGroup(id: 1, name: 'Muatan Nasional', code: 'A'));
     result.add(CourseGroup(id: 2, name: 'Muatan Kewilayahan', code: 'B'));
-    result.add(CourseGroup(id: 3, name: 'Muatan Peminatan Kejuruan', code: 'C'));
+    //result.add(CourseGroup(id: 3, name: 'Muatan Peminatan Kejuruan', code: 'C'));
     result.add(CourseGroup(id: 4, name: 'Dasar Bidang Keahlian', code: 'C1'));
     result.add(CourseGroup(id: 5, name: 'Dasar Program Keahlian', code: 'C2'));
     result.add(CourseGroup(id: 6, name: 'Kompetensi Keahlian', code: 'C3'));

@@ -87,6 +87,7 @@ class ExpertiseBloc {
     selectedExProgram = null;
     selectedExCompetency = null;
     loadExPrograms.add(value.id);
+    loadExCompetencies.add(0);
     return value;
   }
 

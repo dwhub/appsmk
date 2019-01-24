@@ -11,7 +11,7 @@ class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
     return SplashScreen(
-      seconds: 5,
+      seconds: 1,
       navigateAfterSeconds: new KurikulumSMKApp(),
       title: new Text('Kurikulum SMK',
       style: new TextStyle(
