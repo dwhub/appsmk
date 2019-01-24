@@ -2,9 +2,10 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:kurikulumsmk/config.dart';
-import 'package:kurikulumsmk/event/course_duration_event_args.dart';
+import 'package:kurikulumsmk/event/course_event_args.dart';
 import 'package:kurikulumsmk/model/course_allocation.dart';
 import 'package:kurikulumsmk/model/course_duration.dart';
+import 'package:kurikulumsmk/model/course_kikd.dart';
 
 class CourseRepository implements ICourseRepository {
   @override
@@ -44,11 +45,51 @@ class CourseRepository implements ICourseRepository {
     }
     return ex;
   }
+
+  @override
+  Future<List<CourseKIKD>> fetchCourseKIKDs(CourseKIKDEventArgs e) async {
+    http.Response response = await http.get(API_BASE_URL + "course/kikd/with/competency/" + 
+                  e.competencyId.toString() + "/group/" + e.groupId.toString());
+
+    final Map exMap = JsonCodec().decode(response.body);
+
+    List<CourseKIKD> ex = List<CourseKIKD>();
+
+    if (exMap['message'] != null) {
+      ex = (exMap['message'] as List).map((e) => CourseKIKD.fromJson(e)).toList();
+    }
+    
+    if (ex == null) {
+      throw new Exception("An error occurred : [ Status Code = ]");
+    }
+    return ex;
+  }
+
+  @override
+  Future<List<KIKD>> fetchKIKDDetails(KIKDDetailEventArgs e) async {
+    http.Response response = await http.get(API_BASE_URL + "course/kikd/detail/with/competency/" + 
+                  e.competencyId.toString() + "/course/" + e.courseId.toString());
+
+    final Map exMap = JsonCodec().decode(response.body);
+
+    List<KIKD> ex = List<KIKD>();
+
+    if (exMap['message'] != null) {
+      ex = (exMap['message'] as List).map((e) => KIKD.fromJson(e)).toList();
+    }
+    
+    if (ex == null) {
+      throw new Exception("An error occurred : [ Status Code = ]");
+    }
+    return ex;
+  }
 }
 
 abstract class ICourseRepository {
   Future<List<CourseDuration>> fetchCourseDurations(CourseDurationEventArgs e);
   Future<List<CourseAllocation>> fetchCourseAllocations(CourseAllocationEventArgs e);
+  Future<List<CourseKIKD>> fetchCourseKIKDs(CourseKIKDEventArgs e);
+  Future<List<KIKD>> fetchKIKDDetails(KIKDDetailEventArgs e);
 }
 
 class FetchCourseDurationException implements Exception {

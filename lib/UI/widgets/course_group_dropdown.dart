@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kurikulumsmk/bloc/course_duration_bloc.dart';
-import 'package:kurikulumsmk/event/course_duration_event_args.dart';
+import 'package:kurikulumsmk/event/course_event_args.dart';
 import 'package:kurikulumsmk/model/course_group.dart';
 
 class CourseGroupDropdown extends StatelessWidget {
