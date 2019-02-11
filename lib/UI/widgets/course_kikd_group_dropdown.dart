@@ -41,13 +41,13 @@ class CourseKIKDGroupDropdown extends StatelessWidget {
                 alignedDropdown: true,
                 child: DropdownButton<CourseGroup>(
                   value: courseKIKDBloc.selectedCourseGroup,
-                  hint: Text("Grup Mata Pelajaran"),
+                  hint: Text("Grup Mata Pelajaran", style: TextStyle(fontWeight: FontWeight.bold)),
                   items: courseKIKDBloc.courseGroupData.map((CourseGroup courseGroup) {
                       return DropdownMenuItem<CourseGroup>(
                         value: courseGroup,
                         child: Text(
                           courseGroup.name,
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       );
                     }).toList(),

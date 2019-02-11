@@ -42,11 +42,6 @@ class CourseAllocationDetailScreenState extends State<CourseAllocationDetailScre
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-            child: CourseAllocationGroupDropdown(courseAllocationBloc),
-          ),
-          Divider(),
           Expanded(
             child: SingleChildScrollView(
               padding: EdgeInsets.all(5),
@@ -63,7 +58,13 @@ class CourseAllocationDetailScreenState extends State<CourseAllocationDetailScre
                   }
 
                   return PaginatedDataTable(
-                    header: Text('Jam Pelajaran'),
+                    header: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        CourseAllocationGroupDropdown(courseAllocationBloc),
+                        Divider(),
+                      ],
+                    ),
                     rowsPerPage: rowsPerPage,
                     columns: CourseAllocationColumn,
                     source: CourseAllocationDataSource(courseAllocationBloc.courseAllocationData));

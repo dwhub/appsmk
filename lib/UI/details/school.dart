@@ -60,45 +60,39 @@ class SchoolDetailScreenState extends State<SchoolDetailScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          // Province dropdown
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-            child: ProvinceDropdown(commonBloc),
-          ),
-          // District Dropdown
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-            child: DistrictDropdown(commonBloc),
-          ),
-          Container(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: FlatButton(
-                  onPressed: () {
-                    schoolBloc.resetSchoolsData();
-                    schoolBloc.loadSchools.add(SchoolEventArgs(1, 20,
-                            provinceId: commonBloc.selectedProvince == null ? 0 : commonBloc.selectedProvince.id,
-                            districtId: commonBloc.selectedDistrict == null ? 0 : commonBloc.selectedDistrict.id,
-                            competencyId: expertiseBloc.selectedExCompetency == null ? 0 : expertiseBloc.selectedExCompetency.id,
-                            schoolType: schoolBloc.selectedSchoolType));
-                  },
-                  color: Colors.blue,
-                  padding: EdgeInsets.all(10.0),
-                  child: Column( // Replace with a Row for horizontal icon + text
-                    children: <Widget>[
-                      IconTheme(
-                          data: IconThemeData(
-                              color: Colors.white), 
-                          child: Icon(Icons.search),
-                      ),
-                    ],
-                  ),
-                ),
+        Padding(
+          padding: const EdgeInsets.all(3.0),
+          child: FlatButton(
+            onPressed: () {
+              schoolBloc.showFilter.add(!schoolBloc.filterVisible);
+            },
+            color: Colors.blue,
+            padding: EdgeInsets.all(10.0),
+            child: Align(
+                alignment: Alignment.centerLeft,
+                child: IconTheme(
+                  data: IconThemeData(
+                      color: Colors.white), 
+                  child: Text('Filter', style: TextStyle(color: Colors.white, fontSize: 15),
               ),
             ),
           ),
+          ),
+        ),
+        StreamBuilder(
+          stream: schoolBloc.filterSelected,
+          builder: (context, snapshot) {
+            if (commonBloc.provincesData.length == 0 && schoolBloc.filterVisible) {
+              commonBloc.loadProvinces.add(null);
+              commonBloc.selectedProvince = null;
+            }
+
+            return Visibility(
+              child: SchoolFilter(commonBloc, schoolBloc, expertiseBloc),
+              visible: schoolBloc.filterVisible,
+            );
+          }
+        ),
           Divider(),
           Expanded(
             child: StreamBuilder(
@@ -129,6 +123,62 @@ class SchoolDetailScreenState extends State<SchoolDetailScreen> {
             ),
           )
         ]
+      ),
+    );
+  }
+}
+
+class SchoolFilter extends StatelessWidget {
+  final SchoolBloc schoolBloc;
+  final CommonBloc commonBloc;
+  final ExpertiseBloc expertiseBloc;
+
+  SchoolFilter([this.commonBloc, this.schoolBloc, this.expertiseBloc]);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 160,
+      child: Card(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            // Province Dropdown
+            ProvinceDropdown(commonBloc),
+            // District Dropdown
+            DistrictDropdown(commonBloc),
+            // School type
+            Container(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: FlatButton(
+                    onPressed: () {
+                      schoolBloc.resetSchoolsData();
+                      schoolBloc.loadSchools.add(SchoolEventArgs(1, 20,
+                            provinceId: commonBloc.selectedProvince == null ? 0 : commonBloc.selectedProvince.id,
+                            districtId: commonBloc.selectedDistrict == null ? 0 : commonBloc.selectedDistrict.id,
+                            competencyId: expertiseBloc.selectedExCompetency == null ? 0 : expertiseBloc.selectedExCompetency.id,
+                            schoolType: schoolBloc.selectedSchoolType));
+                    },
+                    color: Colors.blue,
+                    padding: EdgeInsets.all(10.0),
+                    child: Column( // Replace with a Row for horizontal icon + text
+                      children: <Widget>[
+                        IconTheme(
+                            data: IconThemeData(
+                                color: Colors.white), 
+                            child: Icon(Icons.search),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

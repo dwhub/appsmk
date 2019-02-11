@@ -3,11 +3,19 @@ class ExpertiseStructure {
   ExpertiseStructure({this.id,
         this.parentId,
         this.name,
-        this.children});
+        this.children,
+        this.isCompetency,
+        this.isProgram,
+        this.order,
+        this.title});
 
   final int id, parentId;
+  final String order;
+  final String title;
   final String name;
   final List<ExpertiseStructure> children;
+  final bool isProgram;
+  final bool isCompetency;
 
   factory ExpertiseStructure.fromJson(Map<String, dynamic> value) {
     return ExpertiseStructure(
@@ -15,21 +23,8 @@ class ExpertiseStructure {
         parentId: value['parent_id'],
         name: value['name'].toString(),
         children: (value['children'] != null) ? List<ExpertiseStructure>.from(
-          value['children'].map((expertiseStructure) => ExpertiseStructure.fromJson(expertiseStructure))) : List<ExpertiseStructure>());
-  }
-}
-
-abstract class IExpertiseStructureRepository {
-  Future<List<ExpertiseStructure>> fetchExpertiseStructures();
-}
-
-class FetchExpertiseStructureException implements Exception {
-  final _message;
-
-  FetchExpertiseStructureException([this._message]);
-
-  String toString() {
-    if (_message == null) return "Exception";
-    return "Exception : $_message";
+          value['children'].map((expertiseStructure) => ExpertiseStructure.fromJson(expertiseStructure))) : List<ExpertiseStructure>(),
+        isCompetency: false,
+        isProgram: false);
   }
 }

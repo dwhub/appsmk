@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kurikulumsmk/model/contact.dart';
+import 'package:url_launcher/url_launcher.dart' as launcher;
 
 class ContactListTile extends StatelessWidget {
   ContactListTile({this.contact});
@@ -37,12 +39,19 @@ class ContactListTile extends StatelessWidget {
                 child: Row(
                   children: <Widget>[
                     Icon(Icons.phone, color: Colors.blue[500], size: 22),
-                    Text(
+                    GestureDetector(
+                      child: new Text('${contact.phone}', style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline, fontStyle: FontStyle.italic)),
+                      onTap: () {
+                        Clipboard.setData(new ClipboardData(text: contact.phone));
+                        launcher.launch('tel:' + contact.phone);
+                      },
+                    ),
+                    /*Text(
                       '${contact.phone}',
                       style: new TextStyle(
                         fontSize: 16.0,
                       ),
-                    ),
+                    ),*/
                   ]
                 ),
               ),

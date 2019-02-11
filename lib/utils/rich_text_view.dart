@@ -12,6 +12,15 @@ class LinkTextSpan extends TextSpan {
               ..onTap = () => launcher.launch(url));
 }
 
+class PhoneTextSpan extends TextSpan {
+  PhoneTextSpan({TextStyle style, String phoneNumber, String text})
+      : super(
+            style: style,
+            text: text ?? phoneNumber,
+            recognizer: new TapGestureRecognizer()
+              ..onTap = () => launcher.launch('tel:' + phoneNumber));
+}
+
 class RichTextView extends StatelessWidget {
   final String text;
   TextAlign textAlign;
@@ -19,8 +28,14 @@ class RichTextView extends StatelessWidget {
   RichTextView({@required this.text, @required this.textAlign});
 
   bool _isLink(String input) {
-    final matcher = new RegExp(
+    final matcher = RegExp(
         r"(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)");
+    return matcher.hasMatch(input);
+  }
+
+  bool _isPhone(String input) {
+    final matcher = RegExp(
+        r"(^(^\+62\s?|^0)(\d{3,4}-?){2}\d{3,4}$)");
     return matcher.hasMatch(input);
   }
 
@@ -30,20 +45,33 @@ class RichTextView extends StatelessWidget {
     final words = text.split(' ');
     List<TextSpan> span = [];
     words.forEach((word) {
-      span.add(_isLink(word)
-          ? new LinkTextSpan(
+      bool isLink = _isLink(word);
+      bool isPhone = _isPhone(word);
+
+      TextSpan tSpan;
+
+      if (isLink) {
+        tSpan = LinkTextSpan(
               text: '$word ',
               url: word,
-              style: _style.copyWith(color: Colors.blue))
-          : new TextSpan(text: '$word ', style: _style));
+              style: _style.copyWith(color: Colors.blue));
+      } else if (isPhone) {
+        tSpan = PhoneTextSpan(
+              text: '$word ',
+              phoneNumber: word,
+              style: _style.copyWith(color: Colors.blue));
+      } else {
+        tSpan = TextSpan(text: '$word ', style: _style);
+      }
+      span.add(tSpan);
     });
     if (span.length > 0) {
-      return new RichText(
+      return RichText(
         textAlign: textAlign,
-        text: new TextSpan(text: '', children: span),
+        text: TextSpan(text: '', children: span),
       );
     } else {
-      return new Text(text);
+      return Text(text);
     }
   }
 }

@@ -37,13 +37,13 @@ class ProvinceDropdown extends StatelessWidget {
                 alignedDropdown: true,
                 child: DropdownButton<Province>(
                   value: commonBloc.selectedProvince,
-                  hint: Text("Provinsi"),
+                  hint: Text("Provinsi", style: TextStyle(fontWeight: FontWeight.bold)),
                   items: commonBloc.provincesData.map((Province provinsi) {
                       return DropdownMenuItem<Province>(
                         value: provinsi,
                         child: Text(
                           provinsi.name,
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       );
                     }).toList(),

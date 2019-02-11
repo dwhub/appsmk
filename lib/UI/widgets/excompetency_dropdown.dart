@@ -42,13 +42,13 @@ class _ECDropdown extends StatelessWidget {
         alignedDropdown: true,
         child: DropdownButton<ExpertiseCompetency>(
           value: expertiseBloc.selectedExCompetency,
-          hint: Text("Kompetensi"),
+          hint: Text("Kompetensi", style: TextStyle(fontWeight: FontWeight.bold)),
           items: expertiseBloc.exCompetenciesData.map((ExpertiseCompetency exComp) {
               return DropdownMenuItem<ExpertiseCompetency>(
                 value: exComp,
                 child: Text(
                   exComp.name,
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                 ),
               );
             }).toList(),

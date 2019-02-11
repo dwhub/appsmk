@@ -79,9 +79,13 @@ class KIKDDetailItem extends StatelessWidget {
 
   Widget _buildTiles(KIKD root) {
     if (root.details.isEmpty) return ListTile(title: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Align(alignment: Alignment.topLeft, child: Text('    ')),
-        Align(alignment: Alignment.topLeft, child: Text(root.order + '. ')),
+        Align(alignment: Alignment.topLeft, child: Padding(
+          padding: const EdgeInsets.all(6),
+          child: Text(root.order + '. '),
+        )),
         Flexible(
           child: Padding(
             padding: EdgeInsets.all(5),
@@ -93,8 +97,12 @@ class KIKDDetailItem extends StatelessWidget {
     return ExpansionTile(
       key: PageStorageKey<KIKD>(root),
       title: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(root.order + '. '),
+          Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Text(root.order + '. '),
+          ),
           Flexible(
             child: Padding(
               padding: const EdgeInsets.all(5.0),

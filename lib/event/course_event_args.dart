@@ -25,3 +25,17 @@ class KIKDDetailEventArgs {
 
   KIKDDetailEventArgs(this.competencyId, this.courseId);
 }
+
+class CourseBookEventArgs {
+  final int competencyId;
+  final int groupId;
+
+  CourseBookEventArgs(this.competencyId, this.groupId);
+}
+
+class CourseEventArgs {
+  final int competencyId;
+  final int groupId;
+
+  CourseEventArgs(this.competencyId, {this.groupId});
+}

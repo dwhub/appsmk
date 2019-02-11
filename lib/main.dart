@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:kurikulumsmk/bloc/common_bloc.dart';
 import 'package:kurikulumsmk/bloc/contact_bloc.dart';
 import 'package:kurikulumsmk/bloc/course_allocation_bloc.dart';
+import 'package:kurikulumsmk/bloc/course_book_bloc.dart';
 import 'package:kurikulumsmk/bloc/course_duration_bloc.dart';
 import 'package:kurikulumsmk/bloc/course_kikd_bloc.dart';
+import 'package:kurikulumsmk/bloc/curriculum_bloc.dart';
 import 'package:kurikulumsmk/bloc/expertise_bloc.dart';
 import 'package:kurikulumsmk/bloc/school_bloc.dart';
 import 'package:kurikulumsmk/repository/contact_repository.dart';
@@ -11,6 +13,7 @@ import 'package:kurikulumsmk/repository/course_repository.dart';
 import 'package:kurikulumsmk/repository/district_repository.dart';
 import 'package:kurikulumsmk/repository/excompetency_repository.dart';
 import 'package:kurikulumsmk/repository/exfield_repository.dart';
+import 'package:kurikulumsmk/repository/expertise_structure_repository.dart';
 import 'package:kurikulumsmk/repository/exprogram_repository.dart';
 import 'package:kurikulumsmk/repository/province_repository.dart';
 import 'package:kurikulumsmk/repository/school_repository.dart';
@@ -29,6 +32,7 @@ void main(){
   container.registerInstance(ExpertiseFieldRepository());
   container.registerInstance(ExpertiseProgramRepository());
   container.registerInstance(ExpertiseCompetencyRepository());
+  container.registerInstance(ExpertiseStructureRepository());
 
   // Register bloc instance
   container.registerInstance(ContactBloc(container.resolve<ContactRepository>()));
@@ -41,6 +45,8 @@ void main(){
   container.registerInstance(CourseDurationBloc(container.resolve<CourseRepository>()));
   container.registerInstance(CourseAllocationBloc(container.resolve<CourseRepository>()));
   container.registerInstance(CourseKIKDBloc(container.resolve<CourseRepository>()));
+  container.registerInstance(CourseBookBloc(container.resolve<CourseRepository>()));
+  container.registerInstance(CurriculumBloc(container.resolve<ExpertiseStructureRepository>()));
 
   runApp(new MaterialApp(
     home: new Splash(),

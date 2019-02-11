@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:kurikulumsmk/bloc/course_duration_bloc.dart';
+import 'package:kurikulumsmk/bloc/course_book_bloc.dart';
 import 'package:kurikulumsmk/event/course_event_args.dart';
 import 'package:kurikulumsmk/model/course_group.dart';
 
-class CourseGroupDropdown extends StatelessWidget {
-  final CourseDurationBloc courseDurationBloc;
+class CourseBookGroupDropdown extends StatelessWidget {
+  final CourseBookBloc courseBookBloc;
 
-  CourseGroupDropdown(this.courseDurationBloc);
+  CourseBookGroupDropdown(this.courseBookBloc);
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: courseDurationBloc.courseGroups,
+      stream: courseBookBloc.courseGroups,
       builder: (context, snapshot) {
-        if (!snapshot.hasData && courseDurationBloc.courseGroupData.length < 1)
+        if (!snapshot.hasData && courseBookBloc.courseGroupData.length < 1)
           return Align(
             alignment: Alignment.centerLeft,
             child: Padding(
@@ -27,22 +27,20 @@ class CourseGroupDropdown extends StatelessWidget {
           );
 
         return StreamBuilder(
-          stream: courseDurationBloc.courseGroupValueChanged,
+          stream: courseBookBloc.courseGroupValueChanged,
           builder: (context, valueChanged) {
-            if (courseDurationBloc.courseGroupData.length < 1) {
-              courseDurationBloc.courseGroupData = snapshot.data as List<CourseGroup>;
-              courseDurationBloc.courseGroupChanged.add(courseDurationBloc.courseGroupData[0]);
-              courseDurationBloc.loadCourseDuration.add(CourseDurationEventArgs(courseDurationBloc.competencyId, 
-                            courseDurationBloc.courseGroupData[0].id));
+            if (courseBookBloc.courseGroupData.length < 1) {
+              courseBookBloc.courseGroupData = snapshot.data as List<CourseGroup>;
+              courseBookBloc.courseGroupChanged.add(courseBookBloc.courseGroupData[0]);
             }
 
             return DropdownButtonHideUnderline(
               child: ButtonTheme(
                 alignedDropdown: true,
                 child: DropdownButton<CourseGroup>(
-                  value: courseDurationBloc.selectedCourseGroup,
+                  value: courseBookBloc.selectedCourseGroup,
                   hint: Text("Grup Mata Pelajaran", style: TextStyle(fontWeight: FontWeight.bold)),
-                  items: courseDurationBloc.courseGroupData.map((CourseGroup courseGroup) {
+                  items: courseBookBloc.courseGroupData.map((CourseGroup courseGroup) {
                       return DropdownMenuItem<CourseGroup>(
                         value: courseGroup,
                         child: Text(
@@ -52,9 +50,7 @@ class CourseGroupDropdown extends StatelessWidget {
                       );
                     }).toList(),
                   onChanged: (CourseGroup newValue) {
-                    courseDurationBloc.courseGroupChanged.add(newValue);
-                    courseDurationBloc.loadCourseDuration.add(CourseDurationEventArgs(courseDurationBloc.competencyId, 
-                        newValue.id));
+                    courseBookBloc.courseGroupChanged.add(newValue);
                   },
                 ),
               ),

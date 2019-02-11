@@ -43,11 +43,6 @@ class KIAndKDDetailScreenState extends State<KIAndKDDetailScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-            child: CourseKIKDGroupDropdown(courseKIKDBloc),
-          ),
-          Divider(),
           Expanded(
             child: SingleChildScrollView(
               padding: EdgeInsets.all(5),
@@ -64,7 +59,13 @@ class KIAndKDDetailScreenState extends State<KIAndKDDetailScreen> {
                   }
 
                   return PaginatedDataTable(
-                    header: Text('KI dan KD'),
+                    header: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        CourseKIKDGroupDropdown(courseKIKDBloc),
+                        Divider(),
+                      ],
+                    ),
                     rowsPerPage: rowsPerPage,
                     columns: CourseKIKDColumn,
                     source: CourseKIKDDataSource(courseKIKDBloc.courseKIKDData, competencyId, context));

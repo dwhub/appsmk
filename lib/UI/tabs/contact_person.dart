@@ -43,45 +43,42 @@ class ContactScreenState extends State<ContactScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        // Province dropdown
         Padding(
-          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-          child: ProvinceDropdown(commonBloc),
-        ),
-        // District Dropdown
-        Padding(
-          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-          child: DistrictDropdown(commonBloc),
-        ),
-        Container(
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+          padding: const EdgeInsets.all(3.0),
+          child: FlatButton(
+            onPressed: () {
+              contactBloc.showFilter.add(!contactBloc.filterVisible);
+            },
+            color: Colors.blue,
+            padding: EdgeInsets.all(10.0),
             child: Align(
-              alignment: Alignment.centerRight,
-              child: FlatButton(
-                onPressed: () {
-                  contactBloc.resetContactData();
-                  contactBloc.loadContacts.add(ContactEventArgs(1, 20, 
-                            provinceId: commonBloc.selectedProvince == null ? 0 : commonBloc.selectedProvince.id,
-                            districtId: commonBloc.selectedDistrict == null ? 0 : commonBloc.selectedDistrict.id));
-                },
-                color: Colors.blue,
-                padding: EdgeInsets.all(10.0),
-                child: Column( // Replace with a Row for horizontal icon + text
-                  children: <Widget>[
-                    IconTheme(
-                        data: IconThemeData(
-                            color: Colors.white), 
-                        child: Icon(Icons.search),
-                    ),
-                  ],
-                ),
+                alignment: Alignment.centerLeft,
+                child: IconTheme(
+                  data: IconThemeData(
+                      color: Colors.white), 
+                  child: Text('Filter', style: TextStyle(color: Colors.white, fontSize: 15),
               ),
             ),
           ),
+          ),
+        ),
+        StreamBuilder(
+          stream: contactBloc.filterSelected,
+          builder: (context, snapshot) {
+            if (commonBloc.provincesData.length == 0 && contactBloc.filterVisible) {
+              commonBloc.loadProvinces.add(null);
+              commonBloc.selectedProvince = null;
+            }
+
+            return Visibility(
+              child: Expanded(flex: 3, child: ListView(children: <Widget>[ ContactFilter(commonBloc, contactBloc) ])),
+              visible: contactBloc.filterVisible,
+            );
+          }
         ),
         Divider(),
         Expanded(
+          flex: 6,
           child: StreamBuilder(
             stream: contactBloc.contacts,
             builder: (context, snapshot) {
@@ -159,3 +156,56 @@ class ContactTile extends StatelessWidget {
 
 // high level Function
 var function = (String msg) => '!!!${msg.toUpperCase()}!!!';
+
+class ContactFilter extends StatelessWidget {
+  final ContactBloc contactBloc;
+  final CommonBloc commonBloc;
+
+  ContactFilter([this.commonBloc, this.contactBloc]);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 160,
+      child: Card(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            // Province Dropdown
+            ProvinceDropdown(commonBloc),
+            // District Dropdown
+            DistrictDropdown(commonBloc),
+            // School type
+            Container(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: FlatButton(
+                    onPressed: () {
+                      contactBloc.resetContactData();
+                      contactBloc.loadContacts.add(ContactEventArgs(1, 20, 
+                                provinceId: commonBloc.selectedProvince == null ? 0 : commonBloc.selectedProvince.id,
+                                districtId: commonBloc.selectedDistrict == null ? 0 : commonBloc.selectedDistrict.id));
+                    },
+                    color: Colors.blue,
+                    padding: EdgeInsets.all(10.0),
+                    child: Column( // Replace with a Row for horizontal icon + text
+                      children: <Widget>[
+                        IconTheme(
+                            data: IconThemeData(
+                                color: Colors.white), 
+                            child: Icon(Icons.search),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

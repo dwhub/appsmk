@@ -42,11 +42,6 @@ class CourseDurationScreenState extends State<CourseDurationScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-            child: CourseGroupDropdown(courseDurationBloc),
-          ),
-          Divider(),
           Expanded(
             child: SingleChildScrollView(
               padding: EdgeInsets.all(5),
@@ -63,7 +58,13 @@ class CourseDurationScreenState extends State<CourseDurationScreen> {
                   }
 
                   return PaginatedDataTable(
-                    header: Text('Jam Pelajaran'),
+                    header: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        CourseGroupDropdown(courseDurationBloc),
+                        Divider(),
+                      ],
+                    ),
                     rowsPerPage: rowsPerPage,
                     columns: CourseDurationColumn,
                     source: CourseDurationDataSource(courseDurationBloc.courseDurationData));

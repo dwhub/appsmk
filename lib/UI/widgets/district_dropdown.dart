@@ -42,13 +42,13 @@ class _DsDropdown extends StatelessWidget {
         alignedDropdown: true,
         child: DropdownButton<District>(
           value: commonBloc.selectedDistrict,
-          hint: Text("Kabupaten"),
+          hint: Text("Kabupaten", style: TextStyle(fontWeight: FontWeight.bold)),
           items: commonBloc.districtsData.map((District district) {
               return DropdownMenuItem<District>(
                 value: district,
                 child: Text(
                   district.name,
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                 ),
               );
             }).toList(),

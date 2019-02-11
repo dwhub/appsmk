@@ -37,13 +37,13 @@ class ExpertiseFieldDropdown extends StatelessWidget {
                 alignedDropdown: true,
                 child: DropdownButton<ExpertiseField>(
                   value: expertiseBloc.selectedExField,
-                  hint: Text("Bidang"),
+                  hint: Text("Bidang", style: TextStyle(fontWeight: FontWeight.bold)),
                   items: expertiseBloc.exFieldsData.map((ExpertiseField exField) {
                       return DropdownMenuItem<ExpertiseField>(
                         value: exField,
                         child: Text(
                           exField.name,
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       );
                     }).toList(),

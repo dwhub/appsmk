@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kurikulumsmk/UI/tiles/school_list_tile.dart';
 import 'package:kurikulumsmk/UI/widgets/district_dropdown.dart';
 import 'package:kurikulumsmk/UI/widgets/excompetency_dropdown.dart';
 import 'package:kurikulumsmk/UI/widgets/exfield_dropdown.dart';
@@ -40,22 +39,25 @@ class _DataSekolahState extends State<DataSekolahScreen> {
     }
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        FlatButton(
-          onPressed: () {
-            schoolBloc.showFilter.add(!schoolBloc.filterVisible);
-          },
-          color: Colors.blue,
-          padding: EdgeInsets.all(10.0),
-          child: Column( // Replace with a Row for horizontal icon + text
-            children: <Widget>[
-              IconTheme(
+        Padding(
+          padding: const EdgeInsets.all(3.0),
+          child: FlatButton(
+            onPressed: () {
+              schoolBloc.showFilter.add(!schoolBloc.filterVisible);
+            },
+            color: Colors.blue,
+            padding: EdgeInsets.all(10.0),
+            child: Align(
+                alignment: Alignment.centerLeft,
+                child: IconTheme(
                   data: IconThemeData(
                       color: Colors.white), 
-                  child: Icon(Icons.search),
+                  child: Text('Filter', style: TextStyle(color: Colors.white, fontSize: 15),
               ),
-            ],
+            ),
+          ),
           ),
         ),
         StreamBuilder(
@@ -72,13 +74,14 @@ class _DataSekolahState extends State<DataSekolahScreen> {
             }
 
             return Visibility(
-              child: SchoolFilter(commonBloc, expertiseBloc, schoolBloc),
+              child: Expanded(flex: 5, child: ListView(children: <Widget>[ SchoolFilter(commonBloc, expertiseBloc, schoolBloc) ])),
               visible: schoolBloc.filterVisible,
             );
           }
         ),
         Divider(),
         Expanded(
+          flex: 2,
           child: StreamBuilder(
             stream: schoolBloc.schools,
             builder: (context, snapshot) {
