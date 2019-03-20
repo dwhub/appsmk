@@ -17,7 +17,15 @@ dependencies:
     sdk: flutter
   rxdart: ^0.20.0
   kiwi: ^0.1.0
-  splashscreen:
+  #splashscreen:
+  dio:
+  #pdf_viewer_plugin:
+  #flutter_webview_plugin:
+  font_awesome_flutter:
+  path_provider:
+  flutter_full_pdf_viewer:
+  #  git: https://github.com/dgriffith0/flutter_full_pdf_viewer-iosfix.git
+    git: https://github.com/albo1337/flutter_full_pdf_viewer
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -35,7 +43,7 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon" 
   ios: true
-  image_path: "assets/logo.png"
+  image_path: "assets/appsmk_icon.jpeg"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
@@ -54,6 +62,8 @@ flutter:
   #  - images/a_dot_ham.jpeg
   assets:
     - assets/logo.png
+    - assets/background.jpg
+    - assets/splash.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
@@ -80,3 +90,10 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages
+
+  fonts:
+    - family: SourceCodeProMedium
+      fonts:
+        - asset: fonts/SourceCodeProPowerlineMedium-Italic.otf
+        - asset: fonts/SourceCodeProMediumForPowerline-Regular.otf
+          weight: 700

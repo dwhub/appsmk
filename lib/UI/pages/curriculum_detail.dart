@@ -15,124 +15,132 @@ class CurriculumDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Kurikulum Detail"),
-      ),
-      body: SingleChildScrollView(
-              child: Center(
-          child: Column(
-            children: <Widget>[
-              ListTile(
-                dense: true,
-                leading: Text(fields.name.split(' ').first, style: TextStyle(fontWeight: FontWeight.w500)),
-                title: Text('Bidang Keahlian:', style: TextStyle(fontWeight: FontWeight.w500)),
-                subtitle: Text(fields.name.replaceFirst(new RegExp(fields.name.split(' ').first), ''), style: TextStyle(fontWeight: FontWeight.w500)),
-              ),
-              ListTile(
-                dense: true,
-                leading: Text(program.name.split(' ').first, style: TextStyle(fontWeight: FontWeight.w500)),
-                title: Text('Program Keahlian', style: TextStyle(fontWeight: FontWeight.w500)),
-                subtitle: Text(program.name.replaceFirst(new RegExp(program.name.split(' ').first), ''), style: TextStyle(fontWeight: FontWeight.w500)),
-              ),
-              ListTile(
-                dense: true,
-                leading: Text(expertise.name.split(' ').first, style: TextStyle(fontWeight: FontWeight.w500)),
-                title: Text('Kompetensi Keahlian', style: TextStyle(fontWeight: FontWeight.w500)),
-                subtitle: Text(expertise.name.replaceFirst(new RegExp(expertise.name.split(' ').first), ''), style: TextStyle(fontWeight: FontWeight.w500)),
-              ),
-              Divider(),
-              SizedBox(
-                height: 300,
-                child: Card(
-                  child: Column(
-                    children: <Widget>[
-                      ListTile(
-                        title: Text('Jam Pelajaran'),
-                        leading: Icon(
-                          Icons.library_books,
-                          color: Colors.blue[500],
-                        ),
-                        onTap: () { 
-                          debugPrint(expertise.id.toString());
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CourseDurationScreen(expertise.id),
-                            ),
-                          );
-                        }
-                      ),
-                      ListTile(
-                        title: Text('Alokasi Waktu'),
-                        leading: Icon(
-                          Icons.schedule,
-                          color: Colors.blue[500],
-                        ),
-                        onTap: () { 
-                          debugPrint(expertise.id.toString());
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CourseAllocationDetailScreen(expertise.id),
-                            ),
-                          );
-                        }
-                      ),
-                      ListTile(
-                        title: Text('Sekolah'),
-                        leading: Icon(
-                          Icons.school,
-                          color: Colors.blue[500],
-                        ),
-                        onTap: () { 
-                          debugPrint(expertise.id.toString());
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SchoolDetailScreen(expertise.id),
-                            ),
-                          );
-                        }
-                      ),
-                      ListTile(
-                        title: Text('KI & KD'),
-                        leading: Icon(
-                          Icons.accessibility,
-                          color: Colors.blue[500],
-                        ),
-                        onTap: () { 
-                          debugPrint(expertise.id.toString());
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => KIAndKDDetailScreen(expertise.id),
-                            ),
-                          );
-                        }
-                      ),
-                      ListTile(
-                        title: Text('Buku Mapel'),
-                        leading: Icon(
-                          Icons.book,
-                          color: Colors.blue[500],
-                        ),
-                        onTap: () { 
-                          debugPrint(expertise.id.toString());
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CourseBookDetailScreen(expertise.id),
-                            ),
-                          );
-                        }
-                      ),
-                    ],
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage("assets/background.jpg"), fit: BoxFit.fill)),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: Text("Kurikulum Detail"),
+        ),
+        body: SingleChildScrollView(
+          child: Center(
+            child: Card(
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    dense: true,
+                    leading: Text(fields.name.split(' ').first, style: TextStyle(fontWeight: FontWeight.w500)),
+                    title: Text('Bidang Keahlian:', style: TextStyle(fontWeight: FontWeight.w500)),
+                    subtitle: Text(fields.name.replaceFirst(new RegExp(fields.name.split(' ').first), ''), style: TextStyle(fontWeight: FontWeight.w500)),
                   ),
-                ),
+                  ListTile(
+                    dense: true,
+                    leading: Text(program.name.split(' ').first, style: TextStyle(fontWeight: FontWeight.w500)),
+                    title: Text('Program Keahlian', style: TextStyle(fontWeight: FontWeight.w500)),
+                    subtitle: Text(program.name.replaceFirst(new RegExp(program.name.split(' ').first), ''), style: TextStyle(fontWeight: FontWeight.w500)),
+                  ),
+                  ListTile(
+                    dense: true,
+                    leading: Text(expertise.name.split(' ').first, style: TextStyle(fontWeight: FontWeight.w500)),
+                    title: Text('Kompetensi Keahlian', style: TextStyle(fontWeight: FontWeight.w500)),
+                    subtitle: Text(expertise.name.replaceFirst(new RegExp(expertise.name.split(' ').first), ''), style: TextStyle(fontWeight: FontWeight.w500)),
+                  ),
+                  Divider(),
+                  SizedBox(
+                    height: 300,
+                    child: Card(
+                      child: Column(
+                        children: <Widget>[
+                          ListTile(
+                            title: Text('Jam Pelajaran'),
+                            leading: Icon(
+                              Icons.library_books,
+                              color: Color.fromRGBO(220, 53, 69, 1.0),
+                            ),
+                            onTap: () { 
+                              debugPrint(expertise.id.toString());
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CourseDurationScreen(expertise.id),
+                                ),
+                              );
+                            }
+                          ),
+                          ListTile(
+                            title: Text('Alokasi Waktu'),
+                            leading: Icon(
+                              Icons.schedule,
+                              color: Color.fromRGBO(220, 53, 69, 1.0),
+                            ),
+                            onTap: () { 
+                              debugPrint(expertise.id.toString());
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CourseAllocationDetailScreen(expertise.id),
+                                ),
+                              );
+                            }
+                          ),
+                          ListTile(
+                            title: Text('Sekolah'),
+                            leading: Icon(
+                              Icons.school,
+                              color: Color.fromRGBO(220, 53, 69, 1.0),
+                            ),
+                            onTap: () { 
+                              debugPrint(expertise.id.toString());
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SchoolDetailScreen(expertise.id),
+                                ),
+                              );
+                            }
+                          ),
+                          ListTile(
+                            title: Text('KI & KD'),
+                            leading: Icon(
+                              Icons.accessibility,
+                              color: Color.fromRGBO(220, 53, 69, 1.0),
+                            ),
+                            onTap: () { 
+                              debugPrint(expertise.id.toString());
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => KIAndKDDetailScreen(expertise.id),
+                                ),
+                              );
+                            }
+                          ),
+                          ListTile(
+                            title: Text('Buku Mapel'),
+                            leading: Icon(
+                              Icons.book,
+                              color: Color.fromRGBO(220, 53, 69, 1.0),
+                            ),
+                            onTap: () { 
+                              debugPrint(expertise.id.toString());
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CourseBookDetailScreen(expertise.id),
+                                ),
+                              );
+                            }
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          )  
+            )  
+          ),
         ),
       ),
     );

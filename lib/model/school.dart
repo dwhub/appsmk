@@ -10,10 +10,11 @@ class School {
         this.subDistrict,
         this.phone,
         this.address,
-        this.fax});
+        this.fax,
+        this.province});
 
   final int id, districtId;
-  final String district, npsn, name, status, address, subDistrict, phone, fax;
+  final String district, npsn, name, status, address, subDistrict, phone, fax, province;
 
   List<School> getDummyData() {
     List<School> result = new List<School>();
@@ -43,7 +44,8 @@ class School {
         status: value['status'].toString(),
         address: value['address'].toString(),
         subDistrict: value['sub_district'].toString(),
-        fax: value['fax'].toString(),);
+        fax: value['fax'].toString(),
+        province: value['province'].toString());
   }
 }
 

@@ -40,72 +40,83 @@ class ContactScreenState extends State<ContactScreen> {
       commonBloc.selectedProvince = null;
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(3.0),
-          child: FlatButton(
-            onPressed: () {
-              contactBloc.showFilter.add(!contactBloc.filterVisible);
-            },
-            color: Colors.blue,
-            padding: EdgeInsets.all(10.0),
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: IconTheme(
-                  data: IconThemeData(
-                      color: Colors.white), 
-                  child: Text('Filter', style: TextStyle(color: Colors.white, fontSize: 15),
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage("assets/background.jpg"), fit: BoxFit.fill)),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: Text("Contact Person"),
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: FlatButton(
+                onPressed: () {
+                  contactBloc.showFilter.add(!contactBloc.filterVisible);
+                },
+                color: Color.fromRGBO(220, 53, 69, 1.0),
+                padding: EdgeInsets.all(10.0),
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: IconTheme(
+                      data: IconThemeData(
+                          color: Colors.white), 
+                      child: Text('Pencarian', style: TextStyle(color: Colors.white, fontSize: 15),
+                  ),
+                ),
+              ),
               ),
             ),
-          ),
-          ),
-        ),
-        StreamBuilder(
-          stream: contactBloc.filterSelected,
-          builder: (context, snapshot) {
-            if (commonBloc.provincesData.length == 0 && contactBloc.filterVisible) {
-              commonBloc.loadProvinces.add(null);
-              commonBloc.selectedProvince = null;
-            }
+            StreamBuilder(
+              stream: contactBloc.filterSelected,
+              builder: (context, snapshot) {
+                if (commonBloc.provincesData.length == 0 && contactBloc.filterVisible) {
+                  commonBloc.loadProvinces.add(null);
+                  commonBloc.selectedProvince = null;
+                }
 
-            return Visibility(
-              child: Expanded(flex: 3, child: ListView(children: <Widget>[ ContactFilter(commonBloc, contactBloc) ])),
-              visible: contactBloc.filterVisible,
-            );
-          }
-        ),
-        Divider(),
-        Expanded(
-          flex: 6,
-          child: StreamBuilder(
-            stream: contactBloc.contacts,
-            builder: (context, snapshot) {
-              if (!snapshot.hasData)
-                return Center(
-                  child: CircularProgressIndicator(),
+                return Visibility(
+                  child: Expanded(flex: 4, child: ListView(children: <Widget>[ ContactFilter(commonBloc, contactBloc) ])),
+                  visible: contactBloc.filterVisible,
                 );
+              }
+            ),
+            Divider(),
+            Expanded(
+              flex: 11,
+              child: StreamBuilder(
+                stream: contactBloc.contacts,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData)
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
 
-              if (snapshot.hasError)
-                return PlaceHolderContent(
-                  title: "Problem Occurred",
-                  message: "Cannot connect to internet please try again",
-                  tryAgainButton: (e) { contactBloc.loadContacts.add(ContactEventArgs(1, 20)); },
-                );
+                  if (snapshot.hasError)
+                    return PlaceHolderContent(
+                      title: "Problem Occurred",
+                      message: "Cannot connect to internet please try again",
+                      tryAgainButton: (e) { contactBloc.loadContacts.add(ContactEventArgs(1, 20)); },
+                    );
 
-              contactBloc.loadMoreStatus = LoadMoreStatus.STABLE;
-              Contacts result = snapshot.data as Contacts;
-              contactBloc.contactsData.addAll(result.contacts);
-              return ContactTile(contacts: contactBloc.contactsData,
-                                 currentPage: result.paging.page,
-                                 totalPage: result.paging.total,
-                                 contactBloc: contactBloc,
-                                 commonBloc: commonBloc);
-            },
-          ),
-        )
-      ],
+                  contactBloc.loadMoreStatus = LoadMoreStatus.STABLE;
+                  Contacts result = snapshot.data as Contacts;
+                  contactBloc.contactsData.addAll(result.contacts);
+                  return ContactTile(contacts: contactBloc.contactsData,
+                                     currentPage: result.paging.page,
+                                     totalPage: result.paging.total,
+                                     contactBloc: contactBloc,
+                                     commonBloc: commonBloc);
+                },
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
@@ -188,7 +199,7 @@ class ContactFilter extends StatelessWidget {
                                 provinceId: commonBloc.selectedProvince == null ? 0 : commonBloc.selectedProvince.id,
                                 districtId: commonBloc.selectedDistrict == null ? 0 : commonBloc.selectedDistrict.id));
                     },
-                    color: Colors.blue,
+                    color: Color.fromRGBO(220, 53, 69, 1.0),
                     padding: EdgeInsets.all(10.0),
                     child: Column( // Replace with a Row for horizontal icon + text
                       children: <Widget>[

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:kurikulumsmk/event/course_event_args.dart';
 import 'package:kurikulumsmk/model/course_allocation.dart';
 import 'package:kurikulumsmk/model/course_group.dart';
@@ -33,7 +35,7 @@ class CourseAllocationBloc {
 
   CourseAllocationBloc(this.courseRepository) {
     _courseGroups = _loadCourseGroup.asyncMap(courseGroup.getData).asBroadcastStream();
-    _courseAllocations = _loadCourseAllocation.asyncMap(courseRepository.fetchCourseAllocations).asBroadcastStream();
+    _courseAllocations = _loadCourseAllocation.asyncMap(fetchCourseAllocations).asBroadcastStream();
     _courseGroupValueChanged = _courseGroupChanged.asyncMap(courseGroupIsChanged).asBroadcastStream();
   }
 
@@ -53,5 +55,25 @@ class CourseAllocationBloc {
     selectedCourseGroup = value;
     loadCourseAllocation.add(CourseAllocationEventArgs(competencyId, value.id));
     return value;
+  }
+
+  Future<List<CourseAllocation>> fetchCourseAllocations(CourseAllocationEventArgs e) async {
+    List<CourseAllocation> response = await courseRepository.fetchCourseAllocations(e);
+    List<CourseAllocation> result = List<CourseAllocation>();
+
+    if (response.length > 0) {
+      int jumlahTotal = 0;
+
+      for (var item in response) {
+        jumlahTotal = jumlahTotal + item.timeAllocation;
+        result.add(item);
+      }
+
+      CourseAllocation temp = CourseAllocation(id: 0, name: "Jumlah", timeAllocation: jumlahTotal);
+
+      result.add(temp);
+    }
+
+    return result;
   }
 }

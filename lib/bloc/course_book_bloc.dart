@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:kurikulumsmk/event/course_event_args.dart';
 import 'package:kurikulumsmk/model/course_book.dart';
 import 'package:kurikulumsmk/model/course_group.dart';
@@ -119,6 +121,8 @@ class CourseBookBloc {
     List<CourseBook> result = await courseRepository.fetchCourseBooks(e);
 
     if (selectedCourse != null) {
+      filterCourseBookData = List<CourseBook>();
+      
       for (var item in result) {
         if (item.courseId == selectedCourse.id) {
           filterCourseBookData.add(item);

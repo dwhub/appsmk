@@ -37,94 +37,100 @@ class CourseBookDetailScreenState extends State<CourseBookDetailScreen> {
       courseBookBloc.loadCourseBook.add(CourseBookEventArgs(courseBookBloc.competencyId, 1));
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Buku Mapel"),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(3.0),
-            child: FlatButton(
-              onPressed: () {
-                courseBookBloc.showFilter.add(!courseBookBloc.filterVisible);
-              },
-              color: Colors.blue,
-              padding: EdgeInsets.all(10.0),
-              child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: IconTheme(
-                    data: IconThemeData(
-                        color: Colors.white), 
-                    child: Text('Filter', style: TextStyle(color: Colors.white, fontSize: 15),
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage("assets/background.jpg"), fit: BoxFit.fill)),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: Text("Buku Mapel"),
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: FlatButton(
+                onPressed: () {
+                  courseBookBloc.showFilter.add(!courseBookBloc.filterVisible);
+                },
+                color: Color.fromRGBO(220, 53, 69, 1.0),
+                padding: EdgeInsets.all(10.0),
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: IconTheme(
+                      data: IconThemeData(
+                          color: Colors.white), 
+                      child: Text('Pencarian', style: TextStyle(color: Colors.white, fontSize: 15),
+                  ),
                 ),
               ),
-            ),
-            ),
-          ),
-          StreamBuilder(
-            stream: courseBookBloc.filterSelected,
-            builder: (context, snapshot) {
-              if (courseBookBloc.courseGroupData.length == 0 && courseBookBloc.filterVisible) {
-                courseBookBloc.loadCourseGroup.add(null);
-                courseBookBloc.selectedCourseGroup = null;
-              }
-
-              return Visibility(
-                child: CourseBookFilter(courseBookBloc),
-                visible: courseBookBloc.filterVisible,
-              );
-            }
-          ),
-          Divider(),
-          Expanded(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(5),
-              child: StreamBuilder(
-                stream: courseBookBloc.courseBooks,
-                builder: (context, snapshot) {
-                  int rowsPerPage = 1;
-
-                  if (snapshot.data != null) {
-                    courseBookBloc.courseBookData = snapshot.data as List<CourseBook>;
-                    if (courseBookBloc.courseBookData.length > 0) {
-                      rowsPerPage = courseBookBloc.courseBookData.length;
-                    }
-                  }
-
-                  List<DataColumn> courseAllColumn = List<DataColumn>();
-                  courseAllColumn.addAll(CourseBookColumn);
-
-                  if (courseBookBloc.xSelected) {
-                    courseAllColumn.addAll(CourseXColumn);
-                  }
-
-                  if (courseBookBloc.xiSelected) {
-                    courseAllColumn.addAll(CourseXIColumn);
-                  }
-
-                  if (courseBookBloc.xiiSelected) {
-                    courseAllColumn.addAll(CourseXIIColumn);
-                  }
-
-                  if (courseBookBloc.xiiiSelected) {
-                    courseAllColumn.addAll(CourseXIIIColumn);
-                  }
-
-                  courseAllColumn.addAll(CourseLastColumn);
-
-                  return PaginatedDataTable(
-                    header: Text((courseBookBloc.selectedCourseGroup == null) ? "Muatan Nasional" : courseBookBloc.selectedCourseGroup.name),
-                    rowsPerPage: rowsPerPage,
-                    columns: courseAllColumn,
-                    source: CourseBookDataSource(courseBookBloc.courseBookData, courseBookBloc));
-                }
               ),
             ),
-          )
-        ],
-      )
+            StreamBuilder(
+              stream: courseBookBloc.filterSelected,
+              builder: (context, snapshot) {
+                if (courseBookBloc.courseGroupData.length == 0 && courseBookBloc.filterVisible) {
+                  courseBookBloc.loadCourseGroup.add(null);
+                  courseBookBloc.selectedCourseGroup = null;
+                }
+
+                return Visibility(
+                  child: CourseBookFilter(courseBookBloc),
+                  visible: courseBookBloc.filterVisible,
+                );
+              }
+            ),
+            Divider(),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(5),
+                child: StreamBuilder(
+                  stream: courseBookBloc.courseBooks,
+                  builder: (context, snapshot) {
+                    int rowsPerPage = 1;
+
+                    if (snapshot.data != null) {
+                      courseBookBloc.courseBookData = snapshot.data as List<CourseBook>;
+                      if (courseBookBloc.courseBookData.length > 0) {
+                        rowsPerPage = courseBookBloc.courseBookData.length;
+                      }
+                    }
+
+                    List<DataColumn> courseAllColumn = List<DataColumn>();
+                    courseAllColumn.addAll(CourseBookColumn);
+
+                    if (courseBookBloc.xSelected) {
+                      courseAllColumn.addAll(CourseXColumn);
+                    }
+
+                    if (courseBookBloc.xiSelected) {
+                      courseAllColumn.addAll(CourseXIColumn);
+                    }
+
+                    if (courseBookBloc.xiiSelected) {
+                      courseAllColumn.addAll(CourseXIIColumn);
+                    }
+
+                    if (courseBookBloc.xiiiSelected) {
+                      courseAllColumn.addAll(CourseXIIIColumn);
+                    }
+
+                    courseAllColumn.addAll(CourseLastColumn);
+
+                    return PaginatedDataTable(
+                      header: Text((courseBookBloc.selectedCourseGroup == null) ? "Muatan Nasional" : courseBookBloc.selectedCourseGroup.name),
+                      rowsPerPage: rowsPerPage,
+                      columns: courseAllColumn,
+                      source: CourseBookDataSource(courseBookBloc.courseBookData, courseBookBloc));
+                  }
+                ),
+              ),
+            )
+          ],
+        )
+      ),
     );
   }
 }
@@ -248,7 +254,7 @@ class CourseBookFilter extends StatelessWidget {
                       courseBookBloc.loadCourseBook.add(CourseBookEventArgs(courseBookBloc.competencyId, courseBookBloc.selectedCourseGroup.id));
                       courseBookBloc.showFilter.add(false);
                     },
-                    color: Colors.blue,
+                    color: Color.fromRGBO(220, 53, 69, 1.0),
                     padding: EdgeInsets.all(10.0),
                     child: Column( // Replace with a Row for horizontal icon + text
                       children: <Widget>[

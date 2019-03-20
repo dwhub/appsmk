@@ -1,9 +1,10 @@
+// Background color : R:220 G:53 B:69
+
 import 'package:flutter/material.dart';
 import 'package:kurikulumsmk/UI/tabs/contact_person.dart';
 import 'package:kurikulumsmk/UI/tabs/school_data.dart';
 import 'package:kurikulumsmk/UI/tabs/maklumat.dart';
 import 'package:kurikulumsmk/UI/tabs/curriculum_structure.dart';
-import 'package:kurikulumsmk/UI/tabs/ujian_nasional.dart';
 
 class KurikulumSMKApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -43,7 +44,7 @@ class _HomeState extends State<HomePage> {
           bottomNavigationBar: new Theme(
             data: Theme.of(context).copyWith(
                 // sets the background color of the `BottomNavigationBar`
-                canvasColor: Colors.blue,
+                canvasColor: Color.fromRGBO(220, 53, 69, 1.0),
                 // sets the active color of the `BottomNavigationBar` if `Brightness` is light
                 primaryColor: Colors.lightBlueAccent,
                 textTheme: Theme

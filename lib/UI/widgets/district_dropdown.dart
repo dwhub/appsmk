@@ -30,20 +30,25 @@ class DistrictDropdown extends StatelessWidget {
   }
 }
 
-class _DsDropdown extends StatelessWidget {
+class _DsDropdown extends StatefulWidget {
   final CommonBloc commonBloc;
 
   _DsDropdown([this.commonBloc]);
 
+  @override
+  __DsDropdownState createState() => __DsDropdownState();
+}
+
+class __DsDropdownState extends State<_DsDropdown> {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
       child: ButtonTheme(
         alignedDropdown: true,
         child: DropdownButton<District>(
-          value: commonBloc.selectedDistrict,
+          value: widget.commonBloc.selectedDistrict,
           hint: Text("Kabupaten", style: TextStyle(fontWeight: FontWeight.bold)),
-          items: commonBloc.districtsData.map((District district) {
+          items: widget.commonBloc.districtsData.map((District district) {
               return DropdownMenuItem<District>(
                 value: district,
                 child: Text(
@@ -53,7 +58,10 @@ class _DsDropdown extends StatelessWidget {
               );
             }).toList(),
           onChanged: (District newValue) {
-            commonBloc.districtChanged.add(newValue);
+            widget.commonBloc.districtChanged.add(newValue);
+            setState(() {
+              widget.commonBloc.selectedDistrict = newValue;
+            });
           },
         ),
       ),

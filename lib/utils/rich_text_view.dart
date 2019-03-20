@@ -9,7 +9,11 @@ class LinkTextSpan extends TextSpan {
             style: style,
             text: text ?? url,
             recognizer: new TapGestureRecognizer()
-              ..onTap = () => launcher.launch(url));
+              ..onTap = () { 
+                var cleanUrl = url.replaceAll("\n", "");
+                launcher.launch(cleanUrl.trim());
+              }
+            );
 }
 
 class PhoneTextSpan extends TextSpan {
@@ -23,9 +27,10 @@ class PhoneTextSpan extends TextSpan {
 
 class RichTextView extends StatelessWidget {
   final String text;
-  TextAlign textAlign;
-
-  RichTextView({@required this.text, @required this.textAlign});
+  final TextAlign textAlign;
+  final Color color;
+  // Color.fromRGBO(220, 53, 69, 1.0)
+  RichTextView({@required this.text, @required this.textAlign, @required this.color});
 
   bool _isLink(String input) {
     final matcher = RegExp(
@@ -54,14 +59,14 @@ class RichTextView extends StatelessWidget {
         tSpan = LinkTextSpan(
               text: '$word ',
               url: word,
-              style: _style.copyWith(color: Colors.blue));
+              style: _style.copyWith(color: Color.fromRGBO(220, 53, 69, 1.0)));
       } else if (isPhone) {
         tSpan = PhoneTextSpan(
               text: '$word ',
               phoneNumber: word,
-              style: _style.copyWith(color: Colors.blue));
+              style: _style.copyWith(color: Color.fromRGBO(220, 53, 69, 1.0)));
       } else {
-        tSpan = TextSpan(text: '$word ', style: _style);
+        tSpan = TextSpan(text: '$word ', style: _style.copyWith(color: color));
       }
       span.add(tSpan);
     });

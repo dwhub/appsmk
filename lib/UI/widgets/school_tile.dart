@@ -44,8 +44,9 @@ class SchoolTile extends StatelessWidget {
             currentPage + 1 <= totalPage) {
           schoolBloc.loadMoreStatus = LoadMoreStatus.LOADING;
           schoolBloc.loadSchools.add(SchoolEventArgs(currentPage + 1, 20,
-                            provinceId: commonBloc.selectedProvince == null ? 0 : commonBloc.selectedProvince.id,
-                            districtId: commonBloc.selectedDistrict == null ? 0 : commonBloc.selectedDistrict.id,
+                            provinceId: (commonBloc.selectedProvince == null || (commonBloc.selectedDistrict != null && commonBloc.selectedDistrict.id > 0)) ? 0 : commonBloc.selectedProvince.id,
+                            districtId: (commonBloc.selectedDistrict == null || (commonBloc.selectedSubDistrict != null && commonBloc.selectedSubDistrict.districtId != "0")) ? 0 : commonBloc.selectedDistrict.id,
+                            subDistrict: (commonBloc.selectedSubDistrict == null || (commonBloc.selectedSubDistrict != null && commonBloc.selectedSubDistrict.districtId == "0")) ? "" : commonBloc.selectedSubDistrict.name,
                             competencyId: expertiseBloc.selectedExCompetency == null ? 0 : expertiseBloc.selectedExCompetency.id,
                             schoolType: schoolBloc.selectedSchoolType));
         }

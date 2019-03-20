@@ -30,20 +30,25 @@ class ExpertiseCompetencyDropdown extends StatelessWidget {
   }
 }
 
-class _ECDropdown extends StatelessWidget {
+class _ECDropdown extends StatefulWidget {
   final ExpertiseBloc expertiseBloc;
 
   _ECDropdown([this.expertiseBloc]);
 
+  @override
+  __ECDropdownState createState() => __ECDropdownState();
+}
+
+class __ECDropdownState extends State<_ECDropdown> {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
       child: ButtonTheme(
         alignedDropdown: true,
         child: DropdownButton<ExpertiseCompetency>(
-          value: expertiseBloc.selectedExCompetency,
+          value: widget.expertiseBloc.selectedExCompetency,
           hint: Text("Kompetensi", style: TextStyle(fontWeight: FontWeight.bold)),
-          items: expertiseBloc.exCompetenciesData.map((ExpertiseCompetency exComp) {
+          items: widget.expertiseBloc.exCompetenciesData.map((ExpertiseCompetency exComp) {
               return DropdownMenuItem<ExpertiseCompetency>(
                 value: exComp,
                 child: Text(
@@ -53,7 +58,10 @@ class _ECDropdown extends StatelessWidget {
               );
             }).toList(),
           onChanged: (ExpertiseCompetency newValue) {
-            expertiseBloc.exCompetencyChanged.add(newValue);
+            widget.expertiseBloc.exCompetencyChanged.add(newValue);
+            setState(() {
+              widget.expertiseBloc.selectedExCompetency = newValue;
+            });
           },
         ),
       ),

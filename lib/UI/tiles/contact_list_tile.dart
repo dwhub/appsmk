@@ -24,7 +24,7 @@ class ContactListTile extends StatelessWidget {
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                 child: Row(
                   children: <Widget>[
-                    Icon(Icons.person, color: Colors.blue[500], size: 22),
+                    Icon(Icons.person, color: Color.fromRGBO(220, 53, 69, 1.0), size: 22),
                     Text(
                       '${contact.name}',
                       style: new TextStyle(
@@ -38,9 +38,9 @@ class ContactListTile extends StatelessWidget {
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                 child: Row(
                   children: <Widget>[
-                    Icon(Icons.phone, color: Colors.blue[500], size: 22),
+                    Icon(Icons.phone, color: Color.fromRGBO(220, 53, 69, 1.0), size: 22),
                     GestureDetector(
-                      child: new Text('${contact.phone}', style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline, fontStyle: FontStyle.italic)),
+                      child: new Text('${contact.phone}', style: TextStyle(color: Color.fromRGBO(220, 53, 69, 1.0), decoration: TextDecoration.underline, fontStyle: FontStyle.italic)),
                       onTap: () {
                         Clipboard.setData(new ClipboardData(text: contact.phone));
                         launcher.launch('tel:' + contact.phone);

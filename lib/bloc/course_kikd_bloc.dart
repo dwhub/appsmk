@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:kurikulumsmk/event/course_event_args.dart';
 import 'package:kurikulumsmk/model/course_group.dart';
 import 'package:kurikulumsmk/model/course_kikd.dart';

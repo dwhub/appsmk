@@ -26,92 +26,110 @@ class _KurikulumScreenState extends State<KurikulumScreen> {
       curriculumBloc.loadExpertiseStructure.add(null);
     }
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Container(
-          height: 50,
-                  child: Card(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Flexible(child: Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                        child: Icon(Icons.search, size: 30, color: Colors.blue,),
-                      )),
-                      Container(
-                        width: 300,
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: TextField(
-                            controller: textController,
-                            decoration: InputDecoration(
-                                hintText: 'Search', border: InputBorder.none),
-                                onChanged: (String text) {
-                                  curriculumBloc.searchExpertise.add(text);
-                                },
-                          ),
-                        ),
-                      ),
-                      Flexible(
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          child: IconButton(icon: Icon(Icons.cancel, color: Colors.blue,), onPressed: () {
-                            textController.clear();
-                            curriculumBloc.searchExpertise.add('');
-                          }),
-                        ),
-                      ),
-                    ],
-                  )
-                  /*ListTile(
-                    leading: Icon(Icons.search),
-                    title: TextField(
-                      controller: textController,
-                      decoration: InputDecoration(
-                          hintText: 'Search', border: InputBorder.none),
-                          onChanged: (String text) {
-                            curriculumBloc.searchExpertise.add(text);
-                          },
-                    ),
-                    trailing: IconButton(icon: Icon(Icons.cancel), onPressed: () {
-                      textController.clear();
-                      curriculumBloc.searchExpertise.add('');
-                    }),
-                  ), */
-                ),
+    double textWidth = MediaQuery.of(context).size.width * 0.75;
+
+    if (MediaQuery.of(context).orientation == Orientation.landscape) {
+      textWidth = MediaQuery.of(context).size.width * 0.86;
+    }
+
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage("assets/background.jpg"), fit: BoxFit.fill)),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: Text("Kurikulum"),
         ),
-        Expanded(
-          child: StreamBuilder(
-            stream: curriculumBloc.expertiseStructures,
-            builder: (context, snapshot) {
-              if (!snapshot.hasData && curriculumBloc.expertiseStructureData.length < 1)
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-
-              if (snapshot.hasError)
-                return PlaceHolderContent(
-                  title: "Problem Occurred",
-                  message: "Cannot connect to internet please try again",
-                  tryAgainButton: (e) { curriculumBloc.loadExpertiseStructure.add(null); },
-                );
-
-              curriculumBloc.expertiseStructureData = snapshot.data as List<ExpertiseStructure>;
-              return StreamBuilder(
-                stream: curriculumBloc.searchValueChanged,
+        body: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+              height: 50,
+                      child: Card(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                              child: Icon(Icons.search, size: 30, color: Color.fromRGBO(220, 53, 69, 1.0)),
+                            )
+                          ),
+                          Container(
+                            width: textWidth,
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: TextField(
+                                controller: textController,
+                                decoration: InputDecoration(
+                                    hintText: 'Search', border: InputBorder.none),
+                                    onChanged: (String text) {
+                                      curriculumBloc.searchExpertise.add(text);
+                                    },
+                              ),
+                            ),
+                          ),
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                              child: IconButton(icon: Icon(Icons.cancel, color: Color.fromRGBO(220, 53, 69, 1.0),), onPressed: () {
+                                textController.clear();
+                                curriculumBloc.searchExpertise.add('');
+                              }),
+                            ),
+                          ),
+                        ],
+                      )
+                      /*ListTile(
+                        leading: Icon(Icons.search),
+                        title: TextField(
+                          controller: textController,
+                          decoration: InputDecoration(
+                              hintText: 'Search', border: InputBorder.none),
+                              onChanged: (String text) {
+                                curriculumBloc.searchExpertise.add(text);
+                              },
+                        ),
+                        trailing: IconButton(icon: Icon(Icons.cancel), onPressed: () {
+                          textController.clear();
+                          curriculumBloc.searchExpertise.add('');
+                        }),
+                      ), */
+                    ),
+            ),
+            Expanded(
+              child: StreamBuilder(
+                stream: curriculumBloc.expertiseStructures,
                 builder: (context, snapshot) {
-                  List<ExpertiseStructure> data = List<ExpertiseStructure>();
+                  if (!snapshot.hasData && curriculumBloc.expertiseStructureData.length < 1)
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
 
-                  if (snapshot.hasData && curriculumBloc.searchText.length > 0) {
-                    data = curriculumBloc.filteredData;
-                  } else {
-                    data = curriculumBloc.viewData;
-                  }
+                  if (snapshot.hasError)
+                    return PlaceHolderContent(
+                      title: "Problem Occurred",
+                      message: "Cannot connect to internet please try again",
+                      tryAgainButton: (e) { curriculumBloc.loadExpertiseStructure.add(null); },
+                    );
 
-                  return Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: Card(
+                  curriculumBloc.expertiseStructureData = snapshot.data as List<ExpertiseStructure>;
+                  return StreamBuilder(
+                    stream: curriculumBloc.searchValueChanged,
+                    builder: (context, snapshot) {
+                      List<ExpertiseStructure> data = List<ExpertiseStructure>();
+
+                      if (snapshot.hasData && curriculumBloc.searchText.length > 0) {
+                        data = curriculumBloc.filteredData;
+                      } else {
+                        data = curriculumBloc.viewData;
+                      }
+
+                      return Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: Card(
+                          color: Colors.white.withOpacity(0.9),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0),
                           ),
@@ -120,13 +138,15 @@ class _KurikulumScreenState extends State<KurikulumScreen> {
                               ExpertiseStructureItem(context, data[index], curriculumBloc),
                             itemCount: data.length,
                           ),
-                  ),
-                );
-              });
-            }
-          ),
-        )
-      ]
+                      ),
+                    );
+                  });
+                }
+              ),
+            )
+          ]
+        ),
+      ),
     );
   }
 }

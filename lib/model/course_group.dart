@@ -1,3 +1,5 @@
+import 'dart:async';
+
 class CourseGroup {
   const CourseGroup({this.id, this.name, this.code});
 

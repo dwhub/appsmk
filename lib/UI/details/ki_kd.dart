@@ -36,45 +36,51 @@ class KIAndKDDetailScreenState extends State<KIAndKDDetailScreen> {
       courseKIKDBloc.selectedCourseGroup = null;
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("KI dan KD"),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Expanded(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(5),
-              child: StreamBuilder(
-                stream: courseKIKDBloc.courseKIKDs,
-                builder: (context, snapshot) {
-                  int rowsPerPage = 1;
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage("assets/background.jpg"), fit: BoxFit.fill)),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: Text("KI dan KD"),
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(5),
+                child: StreamBuilder(
+                  stream: courseKIKDBloc.courseKIKDs,
+                  builder: (context, snapshot) {
+                    int rowsPerPage = 1;
 
-                  if (snapshot.data != null) {
-                    courseKIKDBloc.courseKIKDData = snapshot.data as List<CourseKIKD>;
-                    if (courseKIKDBloc.courseKIKDData.length > 0) {
-                      rowsPerPage = courseKIKDBloc.courseKIKDData.length;
+                    if (snapshot.data != null) {
+                      courseKIKDBloc.courseKIKDData = snapshot.data as List<CourseKIKD>;
+                      if (courseKIKDBloc.courseKIKDData.length > 0) {
+                        rowsPerPage = courseKIKDBloc.courseKIKDData.length;
+                      }
                     }
-                  }
 
-                  return PaginatedDataTable(
-                    header: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        CourseKIKDGroupDropdown(courseKIKDBloc),
-                        Divider(),
-                      ],
-                    ),
-                    rowsPerPage: rowsPerPage,
-                    columns: CourseKIKDColumn,
-                    source: CourseKIKDDataSource(courseKIKDBloc.courseKIKDData, competencyId, context));
-                }
+                    return PaginatedDataTable(
+                      header: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          CourseKIKDGroupDropdown(courseKIKDBloc),
+                          Divider(),
+                        ],
+                      ),
+                      rowsPerPage: rowsPerPage,
+                      columns: CourseKIKDColumn,
+                      source: CourseKIKDDataSource(courseKIKDBloc.courseKIKDData, competencyId, context));
+                  }
+                ),
               ),
-            ),
-          )
-        ],
-      )
+            )
+          ],
+        )
+      ),
     );
   }
 }

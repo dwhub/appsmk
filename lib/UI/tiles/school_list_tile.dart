@@ -22,7 +22,7 @@ class SchoolListTile extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.school, color: Colors.blue[500], size: 22),
+                  Icon(Icons.school, color: Color.fromRGBO(220, 53, 69, 1.0), size: 22),
                   Text(
                     ' ${school.name}',
                     style: new TextStyle(
@@ -57,7 +57,7 @@ class SchoolListTile extends StatelessWidget {
             Padding(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
               child: Text(
-                '${school.district}',
+                '${school.district} - ${school.province}',
                 style: new TextStyle(
                   fontSize: 13.0,
                 ),

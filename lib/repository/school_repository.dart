@@ -8,13 +8,16 @@ import 'package:kurikulumsmk/model/school.dart';
 class SchoolRepository implements ISchoolRepository {
   @override
   Future<Schools> fetchSchools(SchoolEventArgs e) async {
-    http.Response response = await http.get(API_BASE_URL +
+    var encoded = Uri.encodeFull(API_BASE_URL +
         "schools?page=" + e.page.toString() +
         "&pageSize=" + e.pageSize.toString() +
         "&districtID=" + e.districtId.toString() +
         "&provinceID=" + e.provinceId.toString() +
         "&competencyID=" + e.competencyId.toString() +
-        "&schoolType=" + e.schoolType.toString());
+        "&schoolType=" + e.schoolType.toString() +
+        "&subDistrict=" + e.subDistrict);
+
+    http.Response response = await http.get(encoded);
 
     final Map schoolsMap = JsonCodec().decode(response.body);
 

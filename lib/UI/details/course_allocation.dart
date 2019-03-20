@@ -35,45 +35,51 @@ class CourseAllocationDetailScreenState extends State<CourseAllocationDetailScre
       courseAllocationBloc.selectedCourseGroup = null;
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Alokasi Waktu"),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Expanded(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(5),
-              child: StreamBuilder(
-                stream: courseAllocationBloc.courseAllocations,
-                builder: (context, snapshot) {
-                  int rowsPerPage = 1;
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage("assets/background.jpg"), fit: BoxFit.fill)),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: Text("Alokasi Waktu"),
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(5),
+                child: StreamBuilder(
+                  stream: courseAllocationBloc.courseAllocations,
+                  builder: (context, snapshot) {
+                    int rowsPerPage = 1;
 
-                  if (snapshot.data != null) {
-                    courseAllocationBloc.courseAllocationData = snapshot.data as List<CourseAllocation>;
-                    if (courseAllocationBloc.courseAllocationData.length > 0) {
-                      rowsPerPage = courseAllocationBloc.courseAllocationData.length;
+                    if (snapshot.data != null) {
+                      courseAllocationBloc.courseAllocationData = snapshot.data as List<CourseAllocation>;
+                      if (courseAllocationBloc.courseAllocationData.length > 0) {
+                        rowsPerPage = courseAllocationBloc.courseAllocationData.length;
+                      }
                     }
-                  }
 
-                  return PaginatedDataTable(
-                    header: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        CourseAllocationGroupDropdown(courseAllocationBloc),
-                        Divider(),
-                      ],
-                    ),
-                    rowsPerPage: rowsPerPage,
-                    columns: CourseAllocationColumn,
-                    source: CourseAllocationDataSource(courseAllocationBloc.courseAllocationData));
-                }
+                    return PaginatedDataTable(
+                      header: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          CourseAllocationGroupDropdown(courseAllocationBloc),
+                          Divider(),
+                        ],
+                      ),
+                      rowsPerPage: rowsPerPage,
+                      columns: CourseAllocationColumn,
+                      source: CourseAllocationDataSource(courseAllocationBloc.courseAllocationData));
+                  }
+                ),
               ),
-            ),
-          )
-        ],
-      )
+            )
+          ],
+        )
+      ),
     );
   }
 }
@@ -98,13 +104,23 @@ class CourseAllocationDataSource extends DataTableSource {
     if (index >= _courseAllocations.length)
       return null;
     final CourseAllocation courseAllocation = _courseAllocations[index];
-    return DataRow.byIndex(
-      index: index,
-      cells: <DataCell>[
-        DataCell(Text('${courseAllocation.order}.  ${courseAllocation.name}'), onTap: () {}),
-        DataCell(Text('${courseAllocation.timeAllocation}'), onTap: () {}),
-      ]
-    );
+    if (courseAllocation.order != null) {
+      return DataRow.byIndex(
+        index: index,
+        cells: <DataCell>[
+          DataCell(Text('${courseAllocation.order}.  ${courseAllocation.name}'), onTap: () {}),
+          DataCell(Text('${courseAllocation.timeAllocation}'), onTap: () {}),
+        ]
+      );
+    } else {
+      return DataRow.byIndex(
+        index: index,
+        cells: <DataCell>[
+          DataCell(Text('${courseAllocation.name}', textAlign: TextAlign.center,), onTap: () {}),
+          DataCell(Text('${courseAllocation.timeAllocation}'), onTap: () {}),
+        ]
+      );
+    }
   }
 
   @override

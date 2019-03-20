@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:kurikulumsmk/model/expertise_competency.dart';
 import 'package:kurikulumsmk/model/expertise_field.dart';
 import 'package:kurikulumsmk/model/expertise_program.dart';
@@ -54,13 +56,13 @@ class ExpertiseBloc {
   Sink<ExpertiseCompetency> get exCompetencyChanged => _exCompetencyChanged;
   
   ExpertiseBloc(this.exFieldRepo, this.exProgramRepo, this.exCompetencyRepo) {
-    _exFields = _loadExFields.asyncMap(exFieldRepo.fetchExpertiseFields).asBroadcastStream();
+    _exFields = _loadExFields.asyncMap(fetchExpertiseFields).asBroadcastStream();
     _exFieldValueChanged = _exFieldChanged.asyncMap(exFieldIsChanged).asBroadcastStream();
 
-    _exPrograms = _loadExPrograms.asyncMap(exProgramRepo.fetchExpertiseProgram).asBroadcastStream();
+    _exPrograms = _loadExPrograms.asyncMap(fetchExpertiseProgram).asBroadcastStream();
     _exProgramValueChanged = _exProgramChanged.asyncMap(exProgramIsChanged).asBroadcastStream();
 
-    _exCompetencies = _loadExCompetencies.asyncMap(exCompetencyRepo.fetchExpertiseCompetencies).asBroadcastStream();
+    _exCompetencies = _loadExCompetencies.asyncMap(fetchExpertiseCompetencies).asBroadcastStream();
     _exCompetencyValueChanged = _exCompetencyChanged.asyncMap(exCompetencyIsChanged).asBroadcastStream();
   }
 
@@ -101,5 +103,56 @@ class ExpertiseBloc {
   Future<ExpertiseCompetency> exCompetencyIsChanged(ExpertiseCompetency value) async {
     selectedExCompetency = value;
     return value;
+  }
+
+  Future<List<ExpertiseField>> fetchExpertiseFields(dynamic flag) async {
+    List<ExpertiseField> response = await exFieldRepo.fetchExpertiseFields(null);
+    List<ExpertiseField> result = List<ExpertiseField>();
+
+    if (response.length > 0) {
+      ExpertiseField temp = ExpertiseField(id: 0, name: "Semua Bidang Keahlian");
+
+      result.add(temp);
+
+      for (var item in response) {
+        result.add(item);
+      }
+    }
+
+    return result;
+  }
+
+  Future<List<ExpertiseProgram>> fetchExpertiseProgram(int expertiseId) async {
+    List<ExpertiseProgram> response = await exProgramRepo.fetchExpertiseProgram(expertiseId);
+    List<ExpertiseProgram> result = List<ExpertiseProgram>();
+
+    if (response.length > 0) {
+      ExpertiseProgram temp = ExpertiseProgram(id: 0, name: "Semua Program Keahlian");
+
+      result.add(temp);
+
+      for (var item in response) {
+        result.add(item);
+      }
+    }
+
+    return result;
+  }
+  
+  Future<List<ExpertiseCompetency>> fetchExpertiseCompetencies(int programId) async {
+    List<ExpertiseCompetency> response = await exCompetencyRepo.fetchExpertiseCompetencies(programId);
+    List<ExpertiseCompetency> result = List<ExpertiseCompetency>();
+
+    if (response.length > 0) {
+      ExpertiseCompetency temp = ExpertiseCompetency(id: 0, name: "Semua Kompetensi Keahlian");
+
+      result.add(temp);
+
+      for (var item in response) {
+        result.add(item);
+      }
+    }
+
+    return result;
   }
 }

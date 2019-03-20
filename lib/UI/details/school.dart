@@ -3,6 +3,7 @@ import 'package:kiwi/kiwi.dart' as kiwi;
 import 'package:kurikulumsmk/UI/widgets/district_dropdown.dart';
 import 'package:kurikulumsmk/UI/widgets/province_dropdown.dart';
 import 'package:kurikulumsmk/UI/widgets/school_tile.dart';
+import 'package:kurikulumsmk/UI/widgets/sub_district_dropdown.dart';
 import 'package:kurikulumsmk/bloc/common_bloc.dart';
 import 'package:kurikulumsmk/bloc/expertise_bloc.dart';
 import 'package:kurikulumsmk/bloc/school_bloc.dart';
@@ -53,76 +54,82 @@ class SchoolDetailScreenState extends State<SchoolDetailScreen> {
       commonBloc.selectedProvince = null;
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Sekolah"),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(3.0),
-          child: FlatButton(
-            onPressed: () {
-              schoolBloc.showFilter.add(!schoolBloc.filterVisible);
-            },
-            color: Colors.blue,
-            padding: EdgeInsets.all(10.0),
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: IconTheme(
-                  data: IconThemeData(
-                      color: Colors.white), 
-                  child: Text('Filter', style: TextStyle(color: Colors.white, fontSize: 15),
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage("assets/background.jpg"), fit: BoxFit.fill)),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: Text("Sekolah"),
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(3.0),
+            child: FlatButton(
+              onPressed: () {
+                schoolBloc.showFilter.add(!schoolBloc.filterVisible);
+              },
+              color: Color.fromRGBO(220, 53, 69, 1.0),
+              padding: EdgeInsets.all(10.0),
+              child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: IconTheme(
+                    data: IconThemeData(
+                        color: Colors.white), 
+                    child: Text('Pencarian', style: TextStyle(color: Colors.white, fontSize: 15),
+                ),
               ),
             ),
-          ),
-          ),
-        ),
-        StreamBuilder(
-          stream: schoolBloc.filterSelected,
-          builder: (context, snapshot) {
-            if (commonBloc.provincesData.length == 0 && schoolBloc.filterVisible) {
-              commonBloc.loadProvinces.add(null);
-              commonBloc.selectedProvince = null;
-            }
-
-            return Visibility(
-              child: SchoolFilter(commonBloc, schoolBloc, expertiseBloc),
-              visible: schoolBloc.filterVisible,
-            );
-          }
-        ),
-          Divider(),
-          Expanded(
-            child: StreamBuilder(
-              stream: schoolBloc.schools,
-              builder: (context, snapshot) {
-                if (!snapshot.hasData)
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-
-                if (snapshot.hasError)
-                  return PlaceHolderContent(
-                    title: "Problem Occurred",
-                    message: "Cannot connect to internet please try again",
-                    tryAgainButton: (e) { schoolBloc.loadSchools.add(SchoolEventArgs(1, 20)); },
-                  );
-
-                schoolBloc.loadMoreStatus = LoadMoreStatus.STABLE;
-                Schools result = snapshot.data as Schools;
-                schoolBloc.schoolsData.addAll(result.schools);
-                return SchoolTile(schools: schoolBloc.schoolsData,
-                                  currentPage: result.paging.page,
-                                  totalPage: result.paging.total,
-                                  commonBloc: commonBloc,
-                                  schoolBloc: schoolBloc,
-                                  expertiseBloc: expertiseBloc);
-              },
             ),
-          )
-        ]
+          ),
+          StreamBuilder(
+            stream: schoolBloc.filterSelected,
+            builder: (context, snapshot) {
+              if (commonBloc.provincesData.length == 0 && schoolBloc.filterVisible) {
+                commonBloc.loadProvinces.add(null);
+                commonBloc.selectedProvince = null;
+              }
+
+              return Visibility(
+                child: SchoolFilter(commonBloc, schoolBloc, expertiseBloc),
+                visible: schoolBloc.filterVisible,
+              );
+            }
+          ),
+            Divider(),
+            Expanded(
+              child: StreamBuilder(
+                stream: schoolBloc.schools,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData)
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+
+                  if (snapshot.hasError)
+                    return PlaceHolderContent(
+                      title: "Problem Occurred",
+                      message: "Cannot connect to internet please try again",
+                      tryAgainButton: (e) { schoolBloc.loadSchools.add(SchoolEventArgs(1, 20)); },
+                    );
+
+                  schoolBloc.loadMoreStatus = LoadMoreStatus.STABLE;
+                  Schools result = snapshot.data as Schools;
+                  schoolBloc.schoolsData.addAll(result.schools);
+                  return SchoolTile(schools: schoolBloc.schoolsData,
+                                    currentPage: result.paging.page,
+                                    totalPage: result.paging.total,
+                                    commonBloc: commonBloc,
+                                    schoolBloc: schoolBloc,
+                                    expertiseBloc: expertiseBloc);
+                },
+              ),
+            )
+          ]
+        ),
       ),
     );
   }
@@ -138,7 +145,7 @@ class SchoolFilter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 160,
+      height: 210,
       child: Card(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -147,6 +154,8 @@ class SchoolFilter extends StatelessWidget {
             ProvinceDropdown(commonBloc),
             // District Dropdown
             DistrictDropdown(commonBloc),
+            // Sub District Dropdown
+            SubDistrictDropdown(commonBloc),
             // School type
             Container(
               child: Padding(
@@ -157,12 +166,13 @@ class SchoolFilter extends StatelessWidget {
                     onPressed: () {
                       schoolBloc.resetSchoolsData();
                       schoolBloc.loadSchools.add(SchoolEventArgs(1, 20,
-                            provinceId: commonBloc.selectedProvince == null ? 0 : commonBloc.selectedProvince.id,
-                            districtId: commonBloc.selectedDistrict == null ? 0 : commonBloc.selectedDistrict.id,
+                            provinceId: (commonBloc.selectedProvince == null || (commonBloc.selectedDistrict != null && commonBloc.selectedDistrict.id > 0)) ? 0 : commonBloc.selectedProvince.id,
+                            districtId: (commonBloc.selectedDistrict == null || (commonBloc.selectedSubDistrict != null && commonBloc.selectedSubDistrict.districtId != "0")) ? 0 : commonBloc.selectedDistrict.id,
+                            subDistrict: (commonBloc.selectedSubDistrict == null || (commonBloc.selectedSubDistrict != null && commonBloc.selectedSubDistrict.districtId == "0")) ? "" : commonBloc.selectedSubDistrict.name,
                             competencyId: expertiseBloc.selectedExCompetency == null ? 0 : expertiseBloc.selectedExCompetency.id,
                             schoolType: schoolBloc.selectedSchoolType));
                     },
-                    color: Colors.blue,
+                    color: Color.fromRGBO(220, 53, 69, 1.0),
                     padding: EdgeInsets.all(10.0),
                     child: Column( // Replace with a Row for horizontal icon + text
                       children: <Widget>[

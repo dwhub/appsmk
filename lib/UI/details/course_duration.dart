@@ -35,45 +35,51 @@ class CourseDurationScreenState extends State<CourseDurationScreen> {
       courseDurationBloc.selectedCourseGroup = null;
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Jam Pelajaran"),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Expanded(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(5),
-              child: StreamBuilder(
-                stream: courseDurationBloc.courseDurations,
-                builder: (context, snapshot) {
-                  int rowsPerPage = 1;
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage("assets/background.jpg"), fit: BoxFit.fill)),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: Text("Jam Pelajaran"),
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(5),
+                child: StreamBuilder(
+                  stream: courseDurationBloc.courseDurations,
+                  builder: (context, snapshot) {
+                    int rowsPerPage = 1;
 
-                  if (snapshot.data != null) {
-                    courseDurationBloc.courseDurationData = snapshot.data as List<CourseDuration>;
-                    if (courseDurationBloc.courseDurationData.length > 0) {
-                      rowsPerPage = courseDurationBloc.courseDurationData.length;
+                    if (snapshot.data != null) {
+                      courseDurationBloc.courseDurationData = snapshot.data as List<CourseDuration>;
+                      if (courseDurationBloc.courseDurationData.length > 0) {
+                        rowsPerPage = courseDurationBloc.courseDurationData.length;
+                      }
                     }
-                  }
 
-                  return PaginatedDataTable(
-                    header: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        CourseGroupDropdown(courseDurationBloc),
-                        Divider(),
-                      ],
-                    ),
-                    rowsPerPage: rowsPerPage,
-                    columns: CourseDurationColumn,
-                    source: CourseDurationDataSource(courseDurationBloc.courseDurationData));
-                }
+                    return PaginatedDataTable(
+                      header: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          CourseGroupDropdown(courseDurationBloc),
+                          Divider(),
+                        ],
+                      ),
+                      rowsPerPage: rowsPerPage,
+                      columns: CourseDurationColumn,
+                      source: CourseDurationDataSource(courseDurationBloc.courseDurationData));
+                  }
+                ),
               ),
-            ),
-          )
-        ],
-      )
+            )
+          ],
+        )
+      ),
     );
   }
 }
@@ -119,20 +125,37 @@ class CourseDurationDataSource extends DataTableSource {
     if (index >= _courseDurations.length)
       return null;
     final CourseDuration courseDuration = _courseDurations[index];
-    return DataRow.byIndex(
-      index: index,
-      cells: <DataCell>[
-        DataCell(Text('${courseDuration.order}.  ${courseDuration.name}'), onTap: () {}),
-        DataCell(Text('${courseDuration.x1}'), onTap: () {}),
-        DataCell(Text('${courseDuration.x2}'), onTap: () {}),
-        DataCell(Text('${courseDuration.xi1}'), onTap: () {}),
-        DataCell(Text('${courseDuration.xi2}'), onTap: () {}),
-        DataCell(Text('${courseDuration.xii1}'), onTap: () {}),
-        DataCell(Text('${courseDuration.xii2}'), onTap: () {}),
-        DataCell(Text('${courseDuration.xiii1}'), onTap: () {}),
-        DataCell(Text('${courseDuration.xiii2}'), onTap: () {}),
-      ]
-    );
+    if (courseDuration.order != null) {
+      return DataRow.byIndex(
+        index: index,
+        cells: <DataCell>[
+          DataCell(Text('${courseDuration.order}.  ${courseDuration.name}'), onTap: () {}),
+          DataCell(Text('${courseDuration.x1}'), onTap: () {}),
+          DataCell(Text('${courseDuration.x2}'), onTap: () {}),
+          DataCell(Text('${courseDuration.xi1}'), onTap: () {}),
+          DataCell(Text('${courseDuration.xi2}'), onTap: () {}),
+          DataCell(Text('${courseDuration.xii1}'), onTap: () {}),
+          DataCell(Text('${courseDuration.xii2}'), onTap: () {}),
+          DataCell(Text('${courseDuration.xiii1}'), onTap: () {}),
+          DataCell(Text('${courseDuration.xiii2}'), onTap: () {}),
+        ]
+      );
+    } else {
+      return DataRow.byIndex(
+        index: index,
+        cells: <DataCell>[
+          DataCell(Text('${courseDuration.name}'), onTap: () {}),
+          DataCell(Text('${courseDuration.x1}'), onTap: () {}),
+          DataCell(Text('${courseDuration.x2}'), onTap: () {}),
+          DataCell(Text('${courseDuration.xi1}'), onTap: () {}),
+          DataCell(Text('${courseDuration.xi2}'), onTap: () {}),
+          DataCell(Text('${courseDuration.xii1}'), onTap: () {}),
+          DataCell(Text('${courseDuration.xii2}'), onTap: () {}),
+          DataCell(Text('${courseDuration.xiii1}'), onTap: () {}),
+          DataCell(Text('${courseDuration.xiii2}'), onTap: () {}),
+        ]
+      );
+    }
   }
 
   @override

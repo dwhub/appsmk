@@ -17,10 +17,24 @@ class DistrictRepository implements IDistrictRepository {
     }
     return ex;
   }
+
+  @override
+  Future<List<SubDistrict>> fetchSubDistricts(int districtId) async {
+    http.Response response = await http.get(API_BASE_URL + "subDistricts/with/district/" + districtId.toString());
+
+    final Map exMap = JsonCodec().decode(response.body);
+
+    List<SubDistrict> ex = (exMap['message'] as List).map((e) => SubDistrict.fromJson(e)).toList();
+    if (ex == null) {
+      throw new Exception("An error occurred : [ Status Code = ]");
+    }
+    return ex;
+  }
 }
 
 abstract class IDistrictRepository {
   Future<List<District>> fetchDistricts(int provinceId);
+  Future<List<SubDistrict>> fetchSubDistricts(int districtId);
 }
 
 class FetchDistrictException implements Exception {
